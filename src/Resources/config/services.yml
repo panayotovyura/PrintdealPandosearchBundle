@@ -1,0 +1,4 @@
+services:
+    printdeal_pandosearch.builder.search_criteria_builder:
+        class: Printdeal\PandosearchBundle\Builder\SearchCriteriaBuilder
+        arguments: ['@jms_serializer']
