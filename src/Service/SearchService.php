@@ -7,6 +7,8 @@ use GuzzleHttp\Exception\TransferException;
 use JMS\Serializer\SerializerInterface;
 use Printdeal\PandosearchBundle\Builder\SearchCriteriaBuilder;
 use Printdeal\PandosearchBundle\Criteria\SearchCriteria;
+use Printdeal\PandosearchBundle\Exception\RequestException;
+use Printdeal\PandosearchBundle\Exception\SerializationException;
 
 class SearchService
 {
@@ -41,24 +43,33 @@ class SearchService
         $this->serializer = $serializer;
     }
 
+    /**
+     * @param SearchCriteria $criteria
+     * @return array
+     * @throws RequestException
+     * @throws SerializationException
+     */
     public function search(SearchCriteria $criteria): array
     {
         try {
             $response = $this->httpClient->request(
                 'GET',
-                '/search',
+                'search',
                 [
-                    'query' => $this->criteriaBuilder->build($criteria)
+                    'query' => $this->criteriaBuilder->build($criteria),
+                    'headers' => [
+                        'accept' => 'application/json',
+                    ]
                 ]
             );
         } catch (TransferException $exception) {
-            echo $exception->getMessage();
+            throw new RequestException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
-//        try {
-//            return $this->serializer->deserialize($response->getBody()->getContents(), 'json', 'array');
-//        } catch ()
-
-        var_dump($response);
+        try {
+            return $this->serializer->deserialize($response->getBody()->getContents(), 'json', 'array');
+        } catch (\Exception $exception) {
+            throw new SerializationException($exception->getMessage(), $exception->getCode(), $exception);
+        }
     }
 }

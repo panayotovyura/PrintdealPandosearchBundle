@@ -1,4 +1,12 @@
 services:
     printdeal_pandosearch.builder.search_criteria_builder:
         class: Printdeal\PandosearchBundle\Builder\SearchCriteriaBuilder
-        arguments: ['@jms_serializer']
+        arguments:
+            - '@jms_serializer'
+
+    printdeal_pandosearch.service.search_service:
+        class: Printdeal\PandosearchBundle\Service\SearchService
+        arguments:
+            - '@csa_guzzle.clients.printdeal.pandosearch_client'
+            - '@printdeal_pandosearch.builder.search_criteria_builder'
+            - '@jms_serializer.serializer'
