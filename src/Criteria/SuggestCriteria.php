@@ -17,7 +17,7 @@ final class SuggestCriteria
      * @var bool
      * @Serializer\Type("boolean")
      */
-    private $track;
+    private $track = true;
 
     /**
      * @param string $query
