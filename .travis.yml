@@ -1,10 +1,18 @@
 language: php
 php:
   - 7
+  - 7.1
+  - 7.2
   - nightly
+  - hhvm
+env:
+  matrix:
+    - PREFER_LOWEST="--prefer-lowest"
+    - PREFER_LOWEST=""
 install:
   - composer self-update
-  - composer install
+before_script:
+  - composer update --prefer-source $PREFER_LOWEST
 script:
   - phpunit
 after_success:
