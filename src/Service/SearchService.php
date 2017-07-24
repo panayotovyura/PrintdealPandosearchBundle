@@ -68,26 +68,7 @@ class SearchService
      */
     public function search(SearchCriteria $criteria): array
     {
-        try {
-            $response = $this->httpClient->request(
-                self::GET_METHOD,
-                self::SEARCH_ENDPOINT,
-                [
-                    'query' => $this->searchCriteriaBuilder->build($criteria),
-                    'headers' => [
-                        'accept' => self::JSON_ACCEPT,
-                    ]
-                ]
-            );
-        } catch (TransferException $exception) {
-            throw new RequestException($exception->getMessage(), $exception->getCode(), $exception);
-        }
-
-        try {
-            return $this->serializer->deserialize($response->getBody()->getContents(), 'array', 'json');
-        } catch (\Exception $exception) {
-            throw new SerializationException($exception->getMessage(), $exception->getCode(), $exception);
-        }
+        return $this->getResponse(self::SEARCH_ENDPOINT, $this->searchCriteriaBuilder->build($criteria));
     }
 
     /**
@@ -98,12 +79,24 @@ class SearchService
      */
     public function suggest(SuggestCriteria $criteria): array
     {
+        return $this->getResponse(self::SUGGEST_ENDPOINT, $this->suggestCriteriaBuilder->build($criteria));
+    }
+
+    /**
+     * @param string $url
+     * @param array $query
+     * @return array
+     * @throws RequestException
+     * @throws SerializationException
+     */
+    private function getResponse(string $url, array $query): array
+    {
         try {
             $response = $this->httpClient->request(
                 self::GET_METHOD,
-                self::SUGGEST_ENDPOINT,
+                $url,
                 [
-                    'query' => $this->suggestCriteriaBuilder->build($criteria),
+                    'query' => $query,
                     'headers' => [
                         'accept' => self::JSON_ACCEPT,
                     ]
