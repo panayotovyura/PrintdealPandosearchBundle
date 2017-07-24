@@ -1,4 +1,4 @@
-# PrintdealPandosearchBundle [![build status](https://travis-ci.org/panayotovyura/PrintdealPandosearchBundle.png?branch=master)](https://travis-ci.org/panayotovyura/PrintdealPandosearchBundle) #
+# PrintdealPandosearchBundle [![build status](https://travis-ci.org/printdeal/PrintdealPandosearchBundle.png?branch=master)](https://travis-ci.org/printdeal/PrintdealPandosearchBundle) #
 
 ## About ##
 
