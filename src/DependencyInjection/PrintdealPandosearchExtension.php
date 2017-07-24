@@ -34,7 +34,9 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
             $container->prependExtensionConfig('csa_guzzle', [
                 'clients' => [
                     'printdeal.pandosearch_client' => [
-                        'config' => $this->getClientConfiguration($container->getExtensionConfig('printdeal_pandosearch')),
+                        'config' => $this->getClientConfiguration(
+                            $container->getExtensionConfig('printdeal_pandosearch')
+                        ),
                     ]
                 ]
             ]);
