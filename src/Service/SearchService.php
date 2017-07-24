@@ -67,7 +67,7 @@ class SearchService
         }
 
         try {
-            return $this->serializer->deserialize($response->getBody()->getContents(), 'json', 'array');
+            return $this->serializer->deserialize($response->getBody()->getContents(), 'array', 'json');
         } catch (\Exception $exception) {
             throw new SerializationException($exception->getMessage(), $exception->getCode(), $exception);
         }
