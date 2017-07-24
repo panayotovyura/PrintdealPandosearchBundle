@@ -4,7 +4,7 @@ namespace Printdeal\PandosearchBundle\Criteria;
 
 use JMS\Serializer\Annotation as Serializer;
 
-class SearchCriteria
+final class SearchCriteria
 {
     /**
      * @var string
