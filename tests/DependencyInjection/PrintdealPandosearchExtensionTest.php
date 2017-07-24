@@ -41,6 +41,32 @@ class PrintdealPandosearchExtensionTest extends TestCase
         ];
     }
 
+    /**
+     * @param $alias
+     * @dataProvider aliasesProvider
+     */
+    public function testAliasExist($alias)
+    {
+        $container = $this->createContainer();
+        $container->registerExtension(new PrintdealPandosearchExtension());
+        $container->loadFromExtension('printdeal_pandosearch', []);
+        $this->compileContainer($container);
+
+        static::assertTrue(
+            $container->hasAlias($alias)
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function aliasesProvider()
+    {
+        return [
+            ['printdeal_pandosearch'],
+        ];
+    }
+
     private function createContainer()
     {
         $container = new ContainerBuilder(new ParameterBag([
