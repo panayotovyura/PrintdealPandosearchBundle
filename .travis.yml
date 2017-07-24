@@ -1,0 +1,15 @@
+language: php
+php:
+  - 7
+  - nightly
+install:
+  - composer self-update
+  - composer install
+script:
+  - phpunit
+after_success:
+  - ./bin/phpcs --standard=psr2 src
+  - ./bin/phpmd src text cleancode,codesize,controversial,design,unusedcode
+  - ./bin/phpcpd src
+  - ./bin/pdepend src
+  - ./bin/phploc src
