@@ -1,0 +1,1 @@
+<a href="https://travis-ci.org/panayotovyura/PrintdealPandosearchBundle"><img src="https://travis-ci.org/panayotovyura/PrintdealPandosearchBundle.svg?branch=master"></a>
