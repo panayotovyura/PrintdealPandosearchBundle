@@ -48,7 +48,6 @@ class PrintdealPandosearchExtensionTest extends TestCase
     public function testAliasExist($alias)
     {
         $container = $this->createContainer();
-        $container->registerExtension(new CsaGuzzleExtension());
         $container->registerExtension(new PrintdealPandosearchExtension());
         $container->loadFromExtension('printdeal_pandosearch', []);
         $this->compileContainer($container);
