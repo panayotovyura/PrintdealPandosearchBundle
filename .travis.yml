@@ -11,5 +11,5 @@ after_success:
   - ./bin/phpcs --standard=psr2 src
   - ./bin/phpmd src text cleancode,codesize,controversial,design,unusedcode
   - ./bin/phpcpd src
-  - ./bin/pdepend src
+  - ./bin/pdepend --summary-xml=/tmp/summary.xml --jdepend-chart=/tmp/jdepend.svg --overview-pyramid=/tmp/pyramid.svg src
   - ./bin/phploc src
