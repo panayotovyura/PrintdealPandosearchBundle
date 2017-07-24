@@ -64,14 +64,6 @@ class SearchCriteria
     private $track = true;
 
     /**
-     * @return string
-     */
-    public function getQuery(): string
-    {
-        return $this->query;
-    }
-
-    /**
      * @param string $query
      * @return SearchCriteria
      */
@@ -79,14 +71,6 @@ class SearchCriteria
     {
         $this->query = $query;
         return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getSize(): int
-    {
-        return $this->size;
     }
 
     /**
@@ -100,14 +84,6 @@ class SearchCriteria
     }
 
     /**
-     * @return int
-     */
-    public function getPage(): int
-    {
-        return $this->page;
-    }
-
-    /**
      * @param int $page
      * @return SearchCriteria
      */
@@ -115,14 +91,6 @@ class SearchCriteria
     {
         $this->page = $page;
         return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFull(): bool
-    {
-        return $this->full;
     }
 
     /**
@@ -136,14 +104,6 @@ class SearchCriteria
     }
 
     /**
-     * @return bool
-     */
-    public function isNoCorrect(): bool
-    {
-        return $this->noCorrect;
-    }
-
-    /**
      * @param bool $noCorrect
      * @return SearchCriteria
      */
@@ -151,14 +111,6 @@ class SearchCriteria
     {
         $this->noCorrect = $noCorrect;
         return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getFacets(): array
-    {
-        return $this->facets;
     }
 
     /**
@@ -172,14 +124,6 @@ class SearchCriteria
     }
 
     /**
-     * @return string
-     */
-    public function getSort(): string
-    {
-        return $this->sort;
-    }
-
-    /**
      * @param string $sort
      * @return SearchCriteria
      */
@@ -190,14 +134,6 @@ class SearchCriteria
     }
 
     /**
-     * @return bool
-     */
-    public function isNoTiming(): bool
-    {
-        return $this->noTiming;
-    }
-
-    /**
      * @param bool $noTiming
      * @return SearchCriteria
      */
@@ -205,14 +141,6 @@ class SearchCriteria
     {
         $this->noTiming = $noTiming;
         return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isTrack(): bool
-    {
-        return $this->track;
     }
 
     /**
