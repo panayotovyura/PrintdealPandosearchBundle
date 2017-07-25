@@ -17,6 +17,7 @@ use Printdeal\PandosearchBundle\Exception\SerializationException;
 use Printdeal\PandosearchBundle\Service\SearchService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Printdeal\PandosearchBundle\Entity\Search\Response as SearchResponse;
 
 class SearchServiceTest extends TestCase
 {
@@ -162,7 +163,7 @@ class SearchServiceTest extends TestCase
             ->getMock();
         $serializer->expects($this->once())
             ->method('deserialize')
-            ->with($searchResponse, 'array', 'json')
+            ->with($searchResponse, SearchResponse::class, 'json')
             ->willThrowException(new UnsupportedFormatException());
 
         $this->expectException(SerializationException::class);
@@ -192,9 +193,9 @@ class SearchServiceTest extends TestCase
             ->willReturn($criteriaArray);
 
         $searchResponse = 'someJson';
-        $searchResponseArray = [
-            'hit' => 'of course',
-        ];
+        $searchResponseObject = $this->getMockBuilder(SearchResponse::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $streamInterface = $this->getMockBuilder(StreamInterface::class)
             ->disableOriginalConstructor()
@@ -233,10 +234,10 @@ class SearchServiceTest extends TestCase
             ->getMock();
         $serializer->expects($this->once())
             ->method('deserialize')
-            ->with($searchResponse, 'array', 'json')
-            ->willReturn($searchResponseArray);
+            ->with($searchResponse, SearchResponse::class, 'json')
+            ->willReturn($searchResponseObject);
 
-        $this->assertEquals($searchResponseArray, $this->getSearchServiceMock(
+        $this->assertEquals($searchResponseObject, $this->getSearchServiceMock(
             $httpClient,
             $searchCriteriaBuilder,
             null,

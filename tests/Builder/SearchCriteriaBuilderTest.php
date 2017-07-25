@@ -36,7 +36,9 @@ class SearchCriteriaBuilderTest extends AbstractBuilderTest
                     'full' => false,
                     'nocorrect' => true,
                     'notiming' => false,
-                    'track' => true
+                    'track' => true,
+                    'facets' => [],
+                    'sort' => 'relevancy',
                 ]
             ],
             [
@@ -51,6 +53,7 @@ class SearchCriteriaBuilderTest extends AbstractBuilderTest
                     'notiming' => false,
                     'track' => true,
                     'facets' => ['pages'],
+                    'sort' => 'relevancy',
                 ]
             ],
             [
@@ -65,6 +68,7 @@ class SearchCriteriaBuilderTest extends AbstractBuilderTest
                     'notiming' => false,
                     'track' => true,
                     'sort' => 'name',
+                    'facets' => [],
                 ]
             ],
             [
@@ -82,7 +86,9 @@ class SearchCriteriaBuilderTest extends AbstractBuilderTest
                     'full' => false,
                     'nocorrect' => false,
                     'notiming' => false,
-                    'track' => true
+                    'track' => true,
+                    'facets' => [],
+                    'sort' => 'relevancy',
                 ]
             ],
         ];
