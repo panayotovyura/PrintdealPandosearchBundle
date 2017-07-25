@@ -30,9 +30,7 @@ class SuggestCriteriaBuilderTest extends AbstractBuilderTest
         return [
             [
                 new SuggestCriteria(),
-                [
-                    'track' => true,
-                ]
+                []
             ],
             [
                 (new SuggestCriteria())->setTrack(false),
