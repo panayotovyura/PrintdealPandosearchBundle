@@ -9,6 +9,7 @@ use Printdeal\PandosearchBundle\Builder\SearchCriteriaBuilder;
 use Printdeal\PandosearchBundle\Builder\SuggestCriteriaBuilder;
 use Printdeal\PandosearchBundle\Criteria\SearchCriteria;
 use Printdeal\PandosearchBundle\Criteria\SuggestCriteria;
+use Printdeal\PandosearchBundle\Entity\Search\Response as SearchResponse;
 use Printdeal\PandosearchBundle\Exception\RequestException;
 use Printdeal\PandosearchBundle\Exception\SerializationException;
 
@@ -62,13 +63,17 @@ class SearchService
 
     /**
      * @param SearchCriteria $criteria
-     * @return array
+     * @return SearchResponse
      * @throws RequestException
      * @throws SerializationException
      */
-    public function search(SearchCriteria $criteria): array
+    public function search(SearchCriteria $criteria): SearchResponse
     {
-        return $this->getResponse(self::SEARCH_ENDPOINT, $this->searchCriteriaBuilder->build($criteria));
+        return $this->getResponse(
+            self::SEARCH_ENDPOINT,
+            $this->searchCriteriaBuilder->build($criteria),
+            SearchResponse::class
+        );
     }
 
     /**
@@ -85,11 +90,12 @@ class SearchService
     /**
      * @param string $url
      * @param array $query
-     * @return array
+     * @param string $deserializationType
+     * @return array|SearchResponse
      * @throws RequestException
      * @throws SerializationException
      */
-    private function getResponse(string $url, array $query): array
+    private function getResponse(string $url, array $query, string $deserializationType = 'array')
     {
         try {
             $response = $this->httpClient->request(
@@ -107,7 +113,11 @@ class SearchService
         }
 
         try {
-            return $this->serializer->deserialize($response->getBody()->getContents(), 'array', 'json');
+            return $this->serializer->deserialize(
+                $response->getBody()->getContents(),
+                $deserializationType,
+                'json'
+            );
         } catch (\Exception $exception) {
             throw new SerializationException($exception->getMessage(), $exception->getCode(), $exception);
         }
