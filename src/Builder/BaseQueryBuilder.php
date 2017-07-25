@@ -7,15 +7,15 @@ use Printdeal\PandosearchBundle\Criteria\SerializableInterface;
 
 abstract class BaseQueryBuilder
 {
-    /**
-    * @var ArrayTransformerInterface
-    */
-    protected $serializer;
+        /**
+        * @var ArrayTransformerInterface
+        */
+        protected $serializer;
 
-    /**
-    * @var array
-    */
-    private $overrides;
+        /**
+        * @var array
+        */
+        private $overrides;
 
     /**
     * SearchCriteriaBuilder constructor.
