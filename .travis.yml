@@ -1,9 +1,13 @@
 language: php
 php:
   - 7
+  - 7.1
+  - 7.2
   - nightly
 install:
   - composer self-update
+before_script:
+  - composer global require hirak/prestissimo
   - composer install
 script:
   - phpunit
