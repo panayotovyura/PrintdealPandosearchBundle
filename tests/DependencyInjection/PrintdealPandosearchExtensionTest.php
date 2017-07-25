@@ -89,6 +89,7 @@ class PrintdealPandosearchExtensionTest extends TestCase
         $container->getCompilerPassConfig()->setRemovingPasses([]);
         $container->prependExtensionConfig('printdeal_pandosearch', [
             'company_name' => 'drukwerkdeal.nl',
+            'query_settings' => [],
             'guzzle_client' => [
                 'timeout' => 15,
                 'connect_timeout' => 2,

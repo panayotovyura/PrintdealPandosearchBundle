@@ -21,28 +21,46 @@ class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->cannotBeEmpty()
                 ->end()
-                ->arrayNode('query_settings')
-                    ->children()
-                        ->booleanNode('track')->end()
-                        ->booleanNode('full')->end()
-                        ->booleanNode('nocorrect')->end()
-                        ->booleanNode('notiming')->end()
-                    ->end()
-                ->end()
-                ->arrayNode('guzzle_client')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->integerNode('timeout')
-                            ->defaultValue(PrintdealPandosearchExtension::DEFAULT_GUZZLE_TIMEOUT)
-                        ->end()
-                        ->integerNode('connect_timeout')
-                            ->defaultValue(PrintdealPandosearchExtension::DEFAULT_GUZZLE_CONNECT_TIMEOUT)
-                        ->end()
-                    ->end()
+                ->append($this->guzzleSettings())
+                ->append($this->defaultQueryOptions())
                 ->end()
             ->end()
         ;
 
         return $treeBuilder;
+    }
+
+    private function defaultQueryOptions()
+    {
+        $treeBuilder = new TreeBuilder();
+        $node = $treeBuilder->root('query_settings');
+
+        $node->children()
+                ->booleanNode('track')->end()
+                ->booleanNode('full')->end()
+                ->booleanNode('nocorrect')->end()
+                ->booleanNode('notiming')->end()
+            ->end();
+
+        return $node;
+    }
+
+    private function guzzleSettings()
+    {
+        $treeBuilder = new TreeBuilder();
+        $node = $treeBuilder->root('guzzle_client');
+
+        $node->addDefaultsIfNotSet()
+                ->children()
+                    ->integerNode('timeout')
+                        ->defaultValue(PrintdealPandosearchExtension::DEFAULT_GUZZLE_TIMEOUT)
+                    ->end()
+                    ->integerNode('connect_timeout')
+                        ->defaultValue(PrintdealPandosearchExtension::DEFAULT_GUZZLE_CONNECT_TIMEOUT)
+                    ->end()
+                ->end()
+            ->end();
+
+        return $node;
     }
 }
