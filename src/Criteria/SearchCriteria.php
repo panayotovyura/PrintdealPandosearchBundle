@@ -29,14 +29,14 @@ final class SearchCriteria implements SerializableInterface
      * @var bool
      * @Serializer\Type("boolean")
      */
-    private $full = false;
+    private $full;
 
     /**
      * @var bool
      * @Serializer\SerializedName("nocorrect")
      * @Serializer\Type("boolean")
      */
-    private $noCorrect = true;
+    private $noCorrect;
 
     /**
      * @var array<string, string>
@@ -55,13 +55,13 @@ final class SearchCriteria implements SerializableInterface
      * @Serializer\SerializedName("notiming")
      * @Serializer\Type("boolean")
      */
-    private $noTiming = false;
+    private $noTiming;
 
     /**
      * @var bool
      * @Serializer\Type("boolean")
      */
-    private $track = true;
+    private $track;
 
     /**
      * @param string $query

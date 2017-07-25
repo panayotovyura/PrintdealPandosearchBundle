@@ -17,7 +17,7 @@ final class SuggestCriteria implements SerializableInterface
      * @var bool
      * @Serializer\Type("boolean")
      */
-    private $track = true;
+    private $track;
 
     /**
      * @param string $query

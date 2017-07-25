@@ -34,7 +34,7 @@ abstract class BaseQueryBuilder
      */
      protected function executeOverrides(array $query): array
      {
-         return array_merge($query, $this->overrides);
+         return array_merge($this->overrides, $query);
      }
 
     /**
