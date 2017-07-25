@@ -1,6 +1,6 @@
 <?php
 
-namespace Printdeal\PandosearchBundle\Entity\Search;
+namespace Printdeal\PandosearchBundle\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 

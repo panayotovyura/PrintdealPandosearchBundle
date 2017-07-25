@@ -16,8 +16,8 @@ class Response
     private $total;
 
     /**
-     * @var ArrayCollection
-     * @Serializer\Type("ArrayCollection")
+     * @var array
+     * @Serializer\Type("array")
      */
     private $hits;
 
@@ -52,8 +52,8 @@ class Response
     private $timing;
 
     /**
-     * @var ArrayCollection
-     * @Serializer\Type("ArrayCollection<Printdeal\PandosearchBundle\Entity\Search\Suggestion>")
+     * @var ArrayCollection<Printdeal\PandosearchBundle\Entity\Suggestion>
+     * @Serializer\Type("ArrayCollection<Printdeal\PandosearchBundle\Entity\Suggestion>")
      */
     private $suggestions;
 

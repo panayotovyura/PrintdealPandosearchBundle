@@ -9,14 +9,14 @@ use Printdeal\PandosearchBundle\Entity\Timing;
 class Response
 {
     /**
-     * @var ArrayCollection
-     * @Serializer\Type("ArrayCollection")
+     * @var array
+     * @Serializer\Type("array")
      */
     private $hits;
 
     /**
-     * @var ArrayCollection<Suggestion>
-     * @Serializer\Type("ArrayCollection<Printdeal\PandosearchBundle\Entity\Suggestion\Suggestion>")
+     * @var ArrayCollection<Printdeal\PandosearchBundle\Entity\Suggestion>
+     * @Serializer\Type("ArrayCollection<Printdeal\PandosearchBundle\Entity\Suggestion>")
      */
     private $suggestions;
 
@@ -27,9 +27,9 @@ class Response
     private $timing;
 
     /**
-     * @return ArrayCollection
+     * @return array
      */
-    public function getHits(): ArrayCollection
+    public function getHits(): array
     {
         return $this->hits;
     }
