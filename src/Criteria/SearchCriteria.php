@@ -42,13 +42,13 @@ final class SearchCriteria
      * @var array<string, string>
      * @Serializer\Type("array<string, string>")
      */
-    private $facets;
+    private $facets = [];
 
     /**
      * @var string
      * @Serializer\Type("string")
      */
-    private $sort;
+    private $sort = 'relevancy';
 
     /**
      * @var bool
@@ -151,5 +151,77 @@ final class SearchCriteria
     {
         $this->track = $track;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getQuery(): string
+    {
+        return $this->query;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSize(): int
+    {
+        return $this->size;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPage(): int
+    {
+        return $this->page;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFull(): bool
+    {
+        return $this->full;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNoCorrect(): bool
+    {
+        return $this->noCorrect;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFacets(): array
+    {
+        return $this->facets;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSort(): string
+    {
+        return $this->sort;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNoTiming(): bool
+    {
+        return $this->noTiming;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTrack(): bool
+    {
+        return $this->track;
     }
 }

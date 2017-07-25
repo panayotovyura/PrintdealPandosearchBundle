@@ -9,6 +9,8 @@ use Printdeal\PandosearchBundle\Builder\SearchCriteriaBuilder;
 use Printdeal\PandosearchBundle\Builder\SuggestCriteriaBuilder;
 use Printdeal\PandosearchBundle\Criteria\SearchCriteria;
 use Printdeal\PandosearchBundle\Criteria\SuggestCriteria;
+use Printdeal\PandosearchBundle\Entity\Search\Response as SearchResponse;
+use Printdeal\PandosearchBundle\Entity\Suggestion\Response as SuggestionResponse;
 use Printdeal\PandosearchBundle\Exception\RequestException;
 use Printdeal\PandosearchBundle\Exception\SerializationException;
 
@@ -20,6 +22,10 @@ class SearchService
     const GET_METHOD = 'GET';
 
     const JSON_ACCEPT = 'application/json';
+
+    const DEFAULT_RESPONSE_FORMAT = 'json';
+
+    const DEFAULT_RETURN_TYPE = 'array';
 
     /**
      * @var SearchCriteriaBuilder
@@ -62,34 +68,43 @@ class SearchService
 
     /**
      * @param SearchCriteria $criteria
-     * @return array
+     * @return SearchResponse
      * @throws RequestException
      * @throws SerializationException
      */
-    public function search(SearchCriteria $criteria): array
+    public function search(SearchCriteria $criteria): SearchResponse
     {
-        return $this->getResponse(self::SEARCH_ENDPOINT, $this->searchCriteriaBuilder->build($criteria));
+        return $this->getResponse(
+            self::SEARCH_ENDPOINT,
+            $this->searchCriteriaBuilder->build($criteria),
+            SearchResponse::class
+        );
     }
 
     /**
      * @param SuggestCriteria $criteria
-     * @return array
+     * @return SuggestionResponse
      * @throws RequestException
      * @throws SerializationException
      */
-    public function suggest(SuggestCriteria $criteria): array
+    public function suggest(SuggestCriteria $criteria): SuggestionResponse
     {
-        return $this->getResponse(self::SUGGEST_ENDPOINT, $this->suggestCriteriaBuilder->build($criteria));
+        return $this->getResponse(
+            self::SUGGEST_ENDPOINT,
+            $this->suggestCriteriaBuilder->build($criteria),
+            SuggestionResponse::class
+        );
     }
 
     /**
      * @param string $url
      * @param array $query
-     * @return array
+     * @param string $deserializationType
+     * @return array|SearchResponse|SuggestionResponse
      * @throws RequestException
      * @throws SerializationException
      */
-    private function getResponse(string $url, array $query): array
+    private function getResponse(string $url, array $query, string $deserializationType = self::DEFAULT_RETURN_TYPE)
     {
         try {
             $response = $this->httpClient->request(
@@ -107,7 +122,11 @@ class SearchService
         }
 
         try {
-            return $this->serializer->deserialize($response->getBody()->getContents(), 'array', 'json');
+            return $this->serializer->deserialize(
+                $response->getBody()->getContents(),
+                $deserializationType,
+                self::DEFAULT_RESPONSE_FORMAT
+            );
         } catch (\Exception $exception) {
             throw new SerializationException($exception->getMessage(), $exception->getCode(), $exception);
         }
