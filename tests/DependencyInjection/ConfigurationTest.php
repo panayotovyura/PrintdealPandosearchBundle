@@ -20,8 +20,8 @@ class ConfigurationTest extends TestCase
         $config = $processor->processConfiguration(new Configuration(), [$input]);
 
         static::assertEquals(
-            $config,
-            $output
+            $output,
+            $config
         );
     }
 
@@ -46,6 +46,9 @@ class ConfigurationTest extends TestCase
                     'guzzle_client' => [
                         'timeout' => 30,
                         'connect_timeout' => 5,
+                    ],
+                    'query_settings' => [
+                        'track' => false,
                     ]
                 ],
                 [
@@ -53,7 +56,10 @@ class ConfigurationTest extends TestCase
                     'guzzle_client' => [
                         'timeout' => 30,
                         'connect_timeout' => 5,
-                    ]
+                    ],
+                    'query_settings' => [
+                        'track' => false,
+                    ],
                 ],
             ],
         ];

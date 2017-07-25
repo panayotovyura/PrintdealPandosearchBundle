@@ -4,7 +4,7 @@ namespace Printdeal\PandosearchBundle\Criteria;
 
 use JMS\Serializer\Annotation as Serializer;
 
-final class SuggestCriteria
+final class SuggestCriteria implements SerializableInterface
 {
     /**
      * @var string
