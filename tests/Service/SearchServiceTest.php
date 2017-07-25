@@ -18,6 +18,7 @@ use Printdeal\PandosearchBundle\Service\SearchService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Printdeal\PandosearchBundle\Entity\Search\Response as SearchResponse;
+use Printdeal\PandosearchBundle\Entity\Suggestion\Response as SuggestionResponse;
 
 class SearchServiceTest extends TestCase
 {
@@ -261,17 +262,17 @@ class SearchServiceTest extends TestCase
             ->with($criteria)
             ->willReturn($criteriaArray);
 
-        $searchResponse = 'someJson';
-        $searchResponseArray = [
-            'hit' => 'of course',
-        ];
+        $suggestionResponse = 'someJson';
+        $suggestionResponseObject = $this->getMockBuilder(SuggestionResponse::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $streamInterface = $this->getMockBuilder(StreamInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $streamInterface->expects($this->once())
             ->method('getContents')
-            ->willReturn($searchResponse);
+            ->willReturn($suggestionResponse);
 
         $response = $this->getMockBuilder(ResponseInterface::class)
             ->disableOriginalConstructor()
@@ -303,10 +304,10 @@ class SearchServiceTest extends TestCase
             ->getMock();
         $serializer->expects($this->once())
             ->method('deserialize')
-            ->with($searchResponse, 'array', 'json')
-            ->willReturn($searchResponseArray);
+            ->with($suggestionResponse, SuggestionResponse::class, 'json')
+            ->willReturn($suggestionResponseObject);
 
-        $this->assertEquals($searchResponseArray, $this->getSearchServiceMock(
+        $this->assertEquals($suggestionResponseObject, $this->getSearchServiceMock(
             $httpClient,
             null,
             $suggestCriteriaBuilder,
