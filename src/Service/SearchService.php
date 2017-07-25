@@ -22,6 +22,10 @@ class SearchService
 
     const JSON_ACCEPT = 'application/json';
 
+    const DEFAULT_RESPONSE_FORMAT = 'json';
+
+    const DEFAULT_RETURN_TYPE = 'array';
+
     /**
      * @var SearchCriteriaBuilder
      */
@@ -95,7 +99,7 @@ class SearchService
      * @throws RequestException
      * @throws SerializationException
      */
-    private function getResponse(string $url, array $query, string $deserializationType = 'array')
+    private function getResponse(string $url, array $query, string $deserializationType = self::DEFAULT_RETURN_TYPE)
     {
         try {
             $response = $this->httpClient->request(
@@ -116,7 +120,7 @@ class SearchService
             return $this->serializer->deserialize(
                 $response->getBody()->getContents(),
                 $deserializationType,
-                'json'
+                self::DEFAULT_RESPONSE_FORMAT
             );
         } catch (\Exception $exception) {
             throw new SerializationException($exception->getMessage(), $exception->getCode(), $exception);
