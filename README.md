@@ -40,7 +40,7 @@ printdeal_pandosearch:
     company_name: 'company.com'
 ```
 
-also you can add overrides for search queries:
+also you can add default parameters for search request:
 ``` yaml
 printdeal_pandosearch:
     company_name: 'company.com'
