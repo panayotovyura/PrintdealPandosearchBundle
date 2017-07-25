@@ -5,6 +5,7 @@ namespace Printdeal\PandosearchBundle\Entity\Search;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as Serializer;
 use Printdeal\PandosearchBundle\Criteria\SearchCriteria;
+use Printdeal\PandosearchBundle\Entity\Timing;
 
 class Response
 {
@@ -46,7 +47,7 @@ class Response
 
     /**
      * @var Timing
-     * @Serializer\Type("Printdeal\PandosearchBundle\Entity\Search\Timing")
+     * @Serializer\Type("Printdeal\PandosearchBundle\Entity\Timing")
      */
     private $timing;
 

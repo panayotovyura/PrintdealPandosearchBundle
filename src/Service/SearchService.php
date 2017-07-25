@@ -10,6 +10,7 @@ use Printdeal\PandosearchBundle\Builder\SuggestCriteriaBuilder;
 use Printdeal\PandosearchBundle\Criteria\SearchCriteria;
 use Printdeal\PandosearchBundle\Criteria\SuggestCriteria;
 use Printdeal\PandosearchBundle\Entity\Search\Response as SearchResponse;
+use Printdeal\PandosearchBundle\Entity\Suggestion\Response as SuggestionResponse;
 use Printdeal\PandosearchBundle\Exception\RequestException;
 use Printdeal\PandosearchBundle\Exception\SerializationException;
 
@@ -82,20 +83,24 @@ class SearchService
 
     /**
      * @param SuggestCriteria $criteria
-     * @return array
+     * @return SuggestionResponse
      * @throws RequestException
      * @throws SerializationException
      */
-    public function suggest(SuggestCriteria $criteria): array
+    public function suggest(SuggestCriteria $criteria): SuggestionResponse
     {
-        return $this->getResponse(self::SUGGEST_ENDPOINT, $this->suggestCriteriaBuilder->build($criteria));
+        return $this->getResponse(
+            self::SUGGEST_ENDPOINT,
+            $this->suggestCriteriaBuilder->build($criteria),
+            SuggestionResponse::class
+        );
     }
 
     /**
      * @param string $url
      * @param array $query
      * @param string $deserializationType
-     * @return array|SearchResponse
+     * @return array|SearchResponse|SuggestionResponse
      * @throws RequestException
      * @throws SerializationException
      */
