@@ -11,6 +11,7 @@ env:
 install:
   - composer self-update
 before_script:
+  - composer global require hirak/prestissimo
   - composer update --prefer-source $PREFER_LOWEST
 script:
   - phpunit
