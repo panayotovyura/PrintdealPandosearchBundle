@@ -16,8 +16,8 @@ class Response
     private $total;
 
     /**
-     * @var array
-     * @Serializer\Type("array")
+     * @var ArrayCollection
+     * @Serializer\Type("ArrayCollection")
      */
     private $hits;
 
