@@ -40,6 +40,17 @@ printdeal_pandosearch:
     company_name: 'company.com'
 ```
 
+also you can add default parameters for search request:
+``` yaml
+printdeal_pandosearch:
+    company_name: 'company.com'
+    query_settings:
+        track: false
+        full: true
+        nocorrect: true
+        notiming: true
+```
+
 In controller you can use your search:
 
  ``` php

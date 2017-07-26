@@ -22,6 +22,14 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
     {
         $loader = new YamlFileLoader($container, new FileLocator(self::CONFIGS_PATH));
         $loader->load('services.yml');
+
+        if (!empty($mergedConfig['query_settings'])) {
+            $builderIds = array_keys($container->findTaggedServiceIds('printdeal.pandosearch.builder'));
+            foreach ($builderIds as $builderId) {
+                $searchServiceDefinition = $container->getDefinition($builderId);
+                $searchServiceDefinition->replaceArgument(1, $mergedConfig['query_settings']);
+            }
+        }
     }
 
     /**

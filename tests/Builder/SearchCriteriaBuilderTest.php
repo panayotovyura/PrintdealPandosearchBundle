@@ -33,10 +33,6 @@ class SearchCriteriaBuilderTest extends AbstractBuilderTest
                 [
                     'size' => 10,
                     'page' => 1,
-                    'full' => false,
-                    'nocorrect' => true,
-                    'notiming' => false,
-                    'track' => true,
                     'facets' => [],
                     'sort' => 'relevancy',
                 ]
@@ -48,25 +44,19 @@ class SearchCriteriaBuilderTest extends AbstractBuilderTest
                     'q' => 'facets test',
                     'size' => 10,
                     'page' => 1,
-                    'full' => false,
-                    'nocorrect' => true,
-                    'notiming' => false,
-                    'track' => true,
                     'facets' => ['pages'],
                     'sort' => 'relevancy',
                 ]
             ],
             [
                 (new SearchCriteria())->setQuery('sort test')
-                    ->setSort('name'),
+                    ->setSort('name')
+                    ->setTrack(false),
                 [
                     'q' => 'sort test',
                     'size' => 10,
                     'page' => 1,
-                    'full' => false,
-                    'nocorrect' => true,
-                    'notiming' => false,
-                    'track' => true,
+                    'track' => false,
                     'sort' => 'name',
                     'facets' => [],
                 ]

@@ -4,12 +4,16 @@ services:
         public: false
         arguments:
             - '@jms_serializer'
+            - []
+        tags: ['printdeal.pandosearch.builder']
 
     printdeal_pandosearch.builder.suggest_criteria_builder:
         class: Printdeal\PandosearchBundle\Builder\SuggestCriteriaBuilder
         public: false
         arguments:
             - '@jms_serializer.serializer'
+            - []
+        tags: ['printdeal.pandosearch.builder']
 
     printdeal_pandosearch.service.search_service:
         class: Printdeal\PandosearchBundle\Service\SearchService

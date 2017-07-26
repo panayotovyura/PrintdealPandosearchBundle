@@ -89,11 +89,33 @@ class PrintdealPandosearchExtensionTest extends TestCase
         $container->getCompilerPassConfig()->setRemovingPasses([]);
         $container->prependExtensionConfig('printdeal_pandosearch', [
             'company_name' => 'drukwerkdeal.nl',
+            'query_settings' => [],
             'guzzle_client' => [
                 'timeout' => 15,
                 'connect_timeout' => 2,
             ]
         ]);
         $container->compile();
+    }
+
+    public function testArrayPrependedToBuilder()
+    {
+        $queryOverride = [
+            'track' => false,
+            'full' => false,
+            'nocorrect' => false,
+            'notiming' => false,
+        ];
+        $container = $this->createContainer();
+        $container->registerExtension(new PrintdealPandosearchExtension());
+        $container->loadFromExtension('printdeal_pandosearch', [
+            'query_settings' => $queryOverride
+        ]);
+        $this->compileContainer($container);
+
+        $builderIds = array_keys($container->findTaggedServiceIds('printdeal.pandosearch.builder'));
+        foreach ($builderIds as $builderId) {
+            $this->assertEquals($queryOverride, $container->getDefinition($builderId)->getArgument(1));
+        }
     }
 }
