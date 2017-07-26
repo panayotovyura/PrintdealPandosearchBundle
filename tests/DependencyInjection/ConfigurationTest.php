@@ -38,6 +38,21 @@ class ConfigurationTest extends TestCase
                         'timeout' => 15,
                         'connect_timeout' => 2,
                     ],
+                    'localizations' => [],
+                ],
+            ],
+            [
+                [
+                    'company_name' => 'drukwerkdeal.nl',
+                    'localizations' => ['nl', 'en']
+                ],
+                [
+                    'company_name' => 'drukwerkdeal.nl',
+                    'guzzle_client' => [
+                        'timeout' => 15,
+                        'connect_timeout' => 2,
+                    ],
+                    'localizations' => ['nl', 'en'],
                 ],
             ],
             [
@@ -60,6 +75,7 @@ class ConfigurationTest extends TestCase
                     'query_settings' => [
                         'track' => false,
                     ],
+                    'localizations' => [],
                 ],
             ],
         ];
