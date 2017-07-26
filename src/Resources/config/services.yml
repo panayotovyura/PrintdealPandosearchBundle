@@ -1,4 +1,8 @@
 services:
+    printdeal_pandosearch.locator.guzzle_client_locator:
+        class: Printdeal\PandosearchBundle\Locator\GuzzleClientLocator
+        public: false
+
     printdeal_pandosearch.builder.search_criteria_builder:
         class: Printdeal\PandosearchBundle\Builder\SearchCriteriaBuilder
         public: false
@@ -19,7 +23,7 @@ services:
         class: Printdeal\PandosearchBundle\Service\SearchService
         public: false
         arguments:
-            - '@csa_guzzle.client.printdeal.pandosearch_client'
+            - '@printdeal_pandosearch.locator.guzzle_client_locator'
             - '@printdeal_pandosearch.builder.search_criteria_builder'
             - '@printdeal_pandosearch.builder.suggest_criteria_builder'
             - '@jms_serializer.serializer'

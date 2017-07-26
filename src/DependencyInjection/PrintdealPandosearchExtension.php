@@ -16,6 +16,8 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
     const BASE_URL_TEMPLATE = 'https://search.enrise.com/%s/';
     const LOCALIZED_URL_TEMPLATE = 'https://search.enrise.com/%s/%s/';
 
+    const GUZZLE_CLIENT_NAME = 'printdeal.pandosearch_client.%s';
+
     /**
      * @inheritDoc
      */
@@ -58,12 +60,11 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
         $guzzleConfig = $config['guzzle_client'];
         if (!$localizations) {
             return [
-                'printdeal.pandosearch_client.default' => [
+                sprintf(self::GUZZLE_CLIENT_NAME, 'default') => [
                     'config' => $this->getClientConfiguration(
                         $companyName,
                         $guzzleConfig
                     ),
-                    'tags' => ['printdeal.pandosearch.guzzleclient']
                 ]
             ];
         }
@@ -73,13 +74,12 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
             $clients = array_merge(
                 $clients,
                 [
-                    'printdeal.pandosearch_client' . $localization => [
+                    sprintf(self::GUZZLE_CLIENT_NAME, $localization) => [
                         'config' => $this->getClientConfiguration(
                             $companyName,
                             $guzzleConfig,
                             $localization
                         ),
-                        'tags' => ['printdeal.pandosearch.guzzleclient']
                     ]
                 ]
             );

@@ -4,6 +4,7 @@ namespace Tests\Printdeal\PandosearchBundle\DependencyInjection;
 
 use Csa\Bundle\GuzzleBundle\DependencyInjection\CsaGuzzleExtension;
 use PHPUnit\Framework\TestCase;
+use Printdeal\PandosearchBundle\DependencyInjection\Compiler\HttpClientsPass;
 use Printdeal\PandosearchBundle\DependencyInjection\PrintdealPandosearchExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -11,33 +12,39 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 class PrintdealPandosearchExtensionTest extends TestCase
 {
     /**
-     * @dataProvider loadConfigurationProvider
-     *
-     * @param array $services
+     * @param array $localization
+     * @param array $expectedServices
+     * @dataProvider localizationsProvider
      */
-    public function testLoadConfiguration($services)
+    public function testLoadConfigurationWithMultipleLanguages(array $localization, array $expectedServices)
     {
         $container = $this->createContainer();
         $container->registerExtension(new CsaGuzzleExtension());
         $container->registerExtension(new PrintdealPandosearchExtension());
-        $container->loadFromExtension('printdeal_pandosearch', []);
+        $container->loadFromExtension('printdeal_pandosearch', [
+            'localizations' => $localization
+        ]);
         $this->compileContainer($container);
 
-        foreach ($services as $service) {
-            static::assertTrue(
-                $container->hasDefinition($service)
-            );
+        foreach ($expectedServices as $expectedService) {
+            static::assertTrue($container->hasDefinition($expectedService));
         }
     }
 
-    public function loadConfigurationProvider()
+    public function localizationsProvider()
     {
         return [
             [
+                ['nl', 'fr'],
                 [
-                    'csa_guzzle.client.printdeal.pandosearch_client'
-                ],
+                    sprintf(HttpClientsPass::GUZZLE_CLIENTS_SERVICES_NAME, 'nl'),
+                    sprintf(HttpClientsPass::GUZZLE_CLIENTS_SERVICES_NAME, 'fr')
+                ]
             ],
+            [
+                [],
+                [sprintf(HttpClientsPass::GUZZLE_CLIENTS_SERVICES_NAME, 'default')]
+            ]
         ];
     }
 
