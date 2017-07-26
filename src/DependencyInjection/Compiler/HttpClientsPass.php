@@ -4,7 +4,7 @@ namespace Printdeal\PandosearchBundle\DependencyInjection\Compiler;
 
 use Csa\Bundle\GuzzleBundle\DependencyInjection\CompilerPass\MiddlewarePass;
 use Printdeal\PandosearchBundle\DependencyInjection\PrintdealPandosearchExtension;
-use Printdeal\PandosearchBundle\Locator\GuzzleClientLocator;
+use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -18,10 +18,10 @@ class HttpClientsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has(GuzzleClientLocator::class)) {
+        if (!$container->has(HttpClientLocator::class)) {
             return;
         }
-        $locatorService = $container->findDefinition(GuzzleClientLocator::class);
+        $locatorService = $container->findDefinition(HttpClientLocator::class);
 
         $guzzleClientNamePattern = sprintf(self::GUZZLE_CLIENTS_SERVICES_NAME, '');
 

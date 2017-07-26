@@ -13,7 +13,7 @@ use Printdeal\PandosearchBundle\Entity\Search\Response as SearchResponse;
 use Printdeal\PandosearchBundle\Entity\Suggestion\Response as SuggestionResponse;
 use Printdeal\PandosearchBundle\Exception\RequestException;
 use Printdeal\PandosearchBundle\Exception\SerializationException;
-use Printdeal\PandosearchBundle\Locator\GuzzleClientLocator;
+use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
 
 class SearchService
 {
@@ -44,19 +44,19 @@ class SearchService
     private $serializer;
 
     /**
-     * @var GuzzleClientLocator
+     * @var HttpClientLocator
      */
     private $clientLocator;
 
     /**
      * SearchService constructor.
-     * @param GuzzleClientLocator $clientLocator
+     * @param HttpClientLocator $clientLocator
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SuggestCriteriaBuilder $suggestCriteriaBuilder
      * @param SerializerInterface $serializer
      */
     public function __construct(
-        GuzzleClientLocator $clientLocator,
+        HttpClientLocator $clientLocator,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SuggestCriteriaBuilder $suggestCriteriaBuilder,
         SerializerInterface $serializer

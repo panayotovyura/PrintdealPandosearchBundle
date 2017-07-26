@@ -15,7 +15,7 @@ use Printdeal\PandosearchBundle\Criteria\SuggestCriteria;
 use Printdeal\PandosearchBundle\Exception\ClientNotFoundException;
 use Printdeal\PandosearchBundle\Exception\RequestException;
 use Printdeal\PandosearchBundle\Exception\SerializationException;
-use Printdeal\PandosearchBundle\Locator\GuzzleClientLocator;
+use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
 use Printdeal\PandosearchBundle\Service\SearchService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -38,8 +38,8 @@ class SearchServiceTest extends TestCase
         Mock $serializer = null
     ) {
         if (!$clientLocator) {
-            /** @var GuzzleClientLocator $clientLocator */
-            $clientLocator = $this->getMockBuilder(GuzzleClientLocator::class)
+            /** @var HttpClientLocator $clientLocator */
+            $clientLocator = $this->getMockBuilder(HttpClientLocator::class)
                 ->disableOriginalConstructor()
                 ->getMock();
         }
@@ -106,7 +106,7 @@ class SearchServiceTest extends TestCase
                 ]
             )->willThrowException($guzzleException);
 
-        $clientLocator = $this->getMockBuilder(GuzzleClientLocator::class)
+        $clientLocator = $this->getMockBuilder(HttpClientLocator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $clientLocator->expects($this->once())
@@ -168,7 +168,7 @@ class SearchServiceTest extends TestCase
                 ]
             )->willReturn($response);
 
-        $clientLocator = $this->getMockBuilder(GuzzleClientLocator::class)
+        $clientLocator = $this->getMockBuilder(HttpClientLocator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $clientLocator->expects($this->once())
@@ -247,7 +247,7 @@ class SearchServiceTest extends TestCase
                 ]
             )->willReturn($response);
 
-        $clientLocator = $this->getMockBuilder(GuzzleClientLocator::class)
+        $clientLocator = $this->getMockBuilder(HttpClientLocator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $clientLocator->expects($this->once())
@@ -324,7 +324,7 @@ class SearchServiceTest extends TestCase
                 ]
             )->willReturn($response);
 
-        $clientLocator = $this->getMockBuilder(GuzzleClientLocator::class)
+        $clientLocator = $this->getMockBuilder(HttpClientLocator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $clientLocator->expects($this->once())
@@ -371,7 +371,7 @@ class SearchServiceTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $clientLocator = $this->getMockBuilder(GuzzleClientLocator::class)
+        $clientLocator = $this->getMockBuilder(HttpClientLocator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $clientLocator->expects($this->once())

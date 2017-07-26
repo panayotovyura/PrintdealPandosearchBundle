@@ -5,7 +5,7 @@ namespace Printdeal\PandosearchBundle\Locator;
 use GuzzleHttp\ClientInterface;
 use Printdeal\PandosearchBundle\Exception\ClientNotFoundException;
 
-class GuzzleClientLocator
+class HttpClientLocator
 {
     private $clients = [];
 
