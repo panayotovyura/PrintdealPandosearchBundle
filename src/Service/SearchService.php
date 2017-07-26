@@ -68,16 +68,14 @@ class SearchService
 
     /**
      * @param SearchCriteria $criteria
-     * @param string $localization
      * @return SearchResponse
      * @throws RequestException
      * @throws SerializationException
      */
-    public function search(SearchCriteria $criteria, string $localization = ''): SearchResponse
+    public function search(SearchCriteria $criteria): SearchResponse
     {
         return $this->getResponse(
             self::SEARCH_ENDPOINT,
-            $localization,
             $this->searchCriteriaBuilder->build($criteria),
             SearchResponse::class
         );
@@ -85,16 +83,14 @@ class SearchService
 
     /**
      * @param SuggestCriteria $criteria
-     * @param string $localization
      * @return SuggestionResponse
      * @throws RequestException
      * @throws SerializationException
      */
-    public function suggest(SuggestCriteria $criteria, string $localization = ''): SuggestionResponse
+    public function suggest(SuggestCriteria $criteria): SuggestionResponse
     {
         return $this->getResponse(
             self::SUGGEST_ENDPOINT,
-            $localization,
             $this->suggestCriteriaBuilder->build($criteria),
             SuggestionResponse::class
         );
@@ -102,7 +98,6 @@ class SearchService
 
     /**
      * @param string $url
-     * @param string $localization
      * @param array $query
      * @param string $deserializationType
      * @return array|SearchResponse|SuggestionResponse
@@ -111,14 +106,13 @@ class SearchService
      */
     private function getResponse(
         string $url,
-        string $localization,
         array $query,
         string $deserializationType = self::DEFAULT_RETURN_TYPE
     ) {
         try {
             $response = $this->httpClient->request(
                 self::GET_METHOD,
-                $this->getUrl($localization, $url),
+                $url,
                 [
                     'query' => $query,
                     'headers' => [
@@ -139,15 +133,5 @@ class SearchService
         } catch (\Exception $exception) {
             throw new SerializationException($exception->getMessage(), $exception->getCode(), $exception);
         }
-    }
-
-    /**
-     * @param string $localization
-     * @param string $method
-     * @return string
-     */
-    private function getUrl(string $localization, string $method): string
-    {
-        return $localization ? $localization . '/' . $method : $method;
     }
 }
