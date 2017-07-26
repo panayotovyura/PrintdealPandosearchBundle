@@ -14,7 +14,7 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
     const DEFAULT_GUZZLE_TIMEOUT = 15;
     const DEFAULT_GUZZLE_CONNECT_TIMEOUT = 2;
     const BASE_URL_TEMPLATE = 'https://search.enrise.com/%s/';
-    const LOCALIZED_URL_TEMPLATE = 'https://search.enrise.com/%s/%s/';
+    const LOCALIZED_URL_TEMPLATE = self::BASE_URL_TEMPLATE . '%s/';
 
     const GUZZLE_CLIENT_NAME = 'printdeal.pandosearch_client.%s';
 

@@ -14,8 +14,6 @@ class HttpClientsPass implements CompilerPassInterface
     const GUZZLE_CLIENTS_SERVICES_NAME = 'csa_guzzle.client.' . PrintdealPandosearchExtension::GUZZLE_CLIENT_NAME;
 
     /**
-     * You can modify the container here before it is dumped to PHP code.
-     *
      * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
@@ -23,13 +21,11 @@ class HttpClientsPass implements CompilerPassInterface
         if (!$container->has(GuzzleClientLocator::class)) {
             return;
         }
-
         $locatorService = $container->findDefinition(GuzzleClientLocator::class);
-
-        $clients = array_keys($container->findTaggedServiceIds(MiddlewarePass::CLIENT_TAG));
 
         $guzzleClientNamePattern = sprintf(self::GUZZLE_CLIENTS_SERVICES_NAME, '');
 
+        $clients = array_keys($container->findTaggedServiceIds(MiddlewarePass::CLIENT_TAG));
         foreach ($clients as $clientId) {
             if (strpos($clientId, $guzzleClientNamePattern)
                 !== false) {
