@@ -109,7 +109,8 @@ class PrintdealPandosearchExtensionTest extends TestCase
         $container = $this->createContainer();
         $container->registerExtension(new PrintdealPandosearchExtension());
         $container->loadFromExtension('printdeal_pandosearch', [
-            'query_settings' => $queryOverride
+            'query_settings' => $queryOverride,
+            'localizations' => ['nl', 'fr'],
         ]);
         $this->compileContainer($container);
 
