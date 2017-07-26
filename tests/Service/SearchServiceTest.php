@@ -12,8 +12,10 @@ use Printdeal\PandosearchBundle\Builder\SearchCriteriaBuilder;
 use Printdeal\PandosearchBundle\Builder\SuggestCriteriaBuilder;
 use Printdeal\PandosearchBundle\Criteria\SearchCriteria;
 use Printdeal\PandosearchBundle\Criteria\SuggestCriteria;
+use Printdeal\PandosearchBundle\Exception\ClientNotFoundException;
 use Printdeal\PandosearchBundle\Exception\RequestException;
 use Printdeal\PandosearchBundle\Exception\SerializationException;
+use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
 use Printdeal\PandosearchBundle\Service\SearchService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -23,21 +25,21 @@ use Printdeal\PandosearchBundle\Entity\Suggestion\Response as SuggestionResponse
 class SearchServiceTest extends TestCase
 {
     /**
-     * @param Mock|null $httpClient
+     * @param Mock|null $clientLocator
      * @param Mock|null $searchCriteriaBuilder
      * @param Mock|null $suggestCriteriaBuilder
      * @param Mock|null $serializer
      * @return SearchService
      */
     private function getSearchServiceMock(
-        Mock $httpClient = null,
+        Mock $clientLocator = null,
         Mock $searchCriteriaBuilder = null,
         Mock $suggestCriteriaBuilder = null,
         Mock $serializer = null
     ) {
-        if (!$httpClient) {
-            /** @var ClientInterface $httpClient */
-            $httpClient = $this->getMockBuilder(ClientInterface::class)
+        if (!$clientLocator) {
+            /** @var HttpClientLocator $clientLocator */
+            $clientLocator = $this->getMockBuilder(HttpClientLocator::class)
                 ->disableOriginalConstructor()
                 ->getMock();
         }
@@ -63,7 +65,7 @@ class SearchServiceTest extends TestCase
                 ->getMock();
         }
 
-        return new SearchService($httpClient, $searchCriteriaBuilder, $suggestCriteriaBuilder, $serializer);
+        return new SearchService($clientLocator, $searchCriteriaBuilder, $suggestCriteriaBuilder, $serializer);
     }
 
     public function testSearchGuzzleError()
@@ -104,9 +106,17 @@ class SearchServiceTest extends TestCase
                 ]
             )->willThrowException($guzzleException);
 
+        $clientLocator = $this->getMockBuilder(HttpClientLocator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $clientLocator->expects($this->once())
+            ->method('getClient')
+            ->with('default')
+            ->willReturn($httpClient);
+
         $this->expectException(RequestException::class);
 
-        $this->getSearchServiceMock($httpClient, $searchCriteriaBuilder)->search($criteria);
+        $this->getSearchServiceMock($clientLocator, $searchCriteriaBuilder)->search($criteria);
     }
 
     public function testSearchSerializerError()
@@ -158,6 +168,14 @@ class SearchServiceTest extends TestCase
                 ]
             )->willReturn($response);
 
+        $clientLocator = $this->getMockBuilder(HttpClientLocator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $clientLocator->expects($this->once())
+            ->method('getClient')
+            ->with('default')
+            ->willReturn($httpClient);
+
         /** @var SerializerInterface|Mock $serializer */
         $serializer = $this->getMockBuilder(SerializerInterface::class)
             ->disableOriginalConstructor()
@@ -170,7 +188,7 @@ class SearchServiceTest extends TestCase
         $this->expectException(SerializationException::class);
 
         $this->getSearchServiceMock(
-            $httpClient,
+            $clientLocator,
             $searchCriteriaBuilder,
             null,
             $serializer
@@ -229,6 +247,14 @@ class SearchServiceTest extends TestCase
                 ]
             )->willReturn($response);
 
+        $clientLocator = $this->getMockBuilder(HttpClientLocator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $clientLocator->expects($this->once())
+            ->method('getClient')
+            ->with('default')
+            ->willReturn($httpClient);
+
         /** @var SerializerInterface|Mock $serializer */
         $serializer = $this->getMockBuilder(SerializerInterface::class)
             ->disableOriginalConstructor()
@@ -239,7 +265,7 @@ class SearchServiceTest extends TestCase
             ->willReturn($searchResponseObject);
 
         $this->assertEquals($searchResponseObject, $this->getSearchServiceMock(
-            $httpClient,
+            $clientLocator,
             $searchCriteriaBuilder,
             null,
             $serializer
@@ -298,6 +324,14 @@ class SearchServiceTest extends TestCase
                 ]
             )->willReturn($response);
 
+        $clientLocator = $this->getMockBuilder(HttpClientLocator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $clientLocator->expects($this->once())
+            ->method('getClient')
+            ->with('default')
+            ->willReturn($httpClient);
+
         /** @var SerializerInterface|Mock $serializer */
         $serializer = $this->getMockBuilder(SerializerInterface::class)
             ->disableOriginalConstructor()
@@ -308,10 +342,45 @@ class SearchServiceTest extends TestCase
             ->willReturn($suggestionResponseObject);
 
         $this->assertEquals($suggestionResponseObject, $this->getSearchServiceMock(
-            $httpClient,
+            $clientLocator,
             null,
             $suggestCriteriaBuilder,
             $serializer
         )->suggest($criteria));
+    }
+
+    public function testClientNotFoundException()
+    {
+        $criteria = new SearchCriteria();
+        $criteriaArray = [
+            'q' => 'some search query',
+        ];
+        $localization = 'as';
+
+        /** @var SearchCriteriaBuilder|Mock $searchCriteriaBuilder */
+        $searchCriteriaBuilder = $this->getMockBuilder(SearchCriteriaBuilder::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $searchCriteriaBuilder->expects($this->once())
+            ->method('build')
+            ->with($criteria)
+            ->willReturn($criteriaArray);
+
+        /** @var ClientNotFoundException|Mock $exception */
+        $exception = $this->getMockBuilder(ClientNotFoundException::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $clientLocator = $this->getMockBuilder(HttpClientLocator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $clientLocator->expects($this->once())
+            ->method('getClient')
+            ->with($localization)
+            ->willThrowException($exception);
+
+        $this->expectException(ClientNotFoundException::class);
+
+        $this->getSearchServiceMock($clientLocator, $searchCriteriaBuilder)->search($criteria, $localization);
     }
 }

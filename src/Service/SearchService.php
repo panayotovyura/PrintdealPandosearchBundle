@@ -13,6 +13,7 @@ use Printdeal\PandosearchBundle\Entity\Search\Response as SearchResponse;
 use Printdeal\PandosearchBundle\Entity\Suggestion\Response as SuggestionResponse;
 use Printdeal\PandosearchBundle\Exception\RequestException;
 use Printdeal\PandosearchBundle\Exception\SerializationException;
+use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
 
 class SearchService
 {
@@ -38,29 +39,29 @@ class SearchService
     private $suggestCriteriaBuilder;
 
     /**
-     * @var ClientInterface
-     */
-    private $httpClient;
-
-    /**
      * @var SerializerInterface
      */
     private $serializer;
 
     /**
+     * @var HttpClientLocator
+     */
+    private $clientLocator;
+
+    /**
      * SearchService constructor.
-     * @param ClientInterface $httpClient
+     * @param HttpClientLocator $clientLocator
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SuggestCriteriaBuilder $suggestCriteriaBuilder
      * @param SerializerInterface $serializer
      */
     public function __construct(
-        ClientInterface $httpClient,
+        HttpClientLocator $clientLocator,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SuggestCriteriaBuilder $suggestCriteriaBuilder,
         SerializerInterface $serializer
     ) {
-        $this->httpClient = $httpClient;
+        $this->clientLocator = $clientLocator;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->suggestCriteriaBuilder = $suggestCriteriaBuilder;
         $this->serializer = $serializer;
@@ -70,10 +71,8 @@ class SearchService
      * @param SearchCriteria $criteria
      * @param string $localization
      * @return SearchResponse
-     * @throws RequestException
-     * @throws SerializationException
      */
-    public function search(SearchCriteria $criteria, string $localization = ''): SearchResponse
+    public function search(SearchCriteria $criteria, string $localization = 'default'): SearchResponse
     {
         return $this->getResponse(
             self::SEARCH_ENDPOINT,
@@ -87,10 +86,8 @@ class SearchService
      * @param SuggestCriteria $criteria
      * @param string $localization
      * @return SuggestionResponse
-     * @throws RequestException
-     * @throws SerializationException
      */
-    public function suggest(SuggestCriteria $criteria, string $localization = ''): SuggestionResponse
+    public function suggest(SuggestCriteria $criteria, string $localization = 'default'): SuggestionResponse
     {
         return $this->getResponse(
             self::SUGGEST_ENDPOINT,
@@ -116,9 +113,9 @@ class SearchService
         string $deserializationType = self::DEFAULT_RETURN_TYPE
     ) {
         try {
-            $response = $this->httpClient->request(
+            $response = $this->clientLocator->getClient($localization)->request(
                 self::GET_METHOD,
-                $this->getUrl($localization, $url),
+                $url,
                 [
                     'query' => $query,
                     'headers' => [
@@ -139,15 +136,5 @@ class SearchService
         } catch (\Exception $exception) {
             throw new SerializationException($exception->getMessage(), $exception->getCode(), $exception);
         }
-    }
-
-    /**
-     * @param string $localization
-     * @param string $method
-     * @return string
-     */
-    private function getUrl(string $localization, string $method): string
-    {
-        return $localization ? $localization . '/' . $method : $method;
     }
 }

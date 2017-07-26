@@ -2,6 +2,7 @@
 
 namespace Printdeal\PandosearchBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -23,6 +24,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->append($this->guzzleSettings())
                 ->append($this->defaultQueryOptions())
+                ->append($this->localizationsTree())
                 ->end()
             ->end()
         ;
@@ -30,6 +32,19 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
+    /**
+     * @return ArrayNodeDefinition
+     */
+    private function localizationsTree()
+    {
+        return (new TreeBuilder())->root('localizations')
+                ->prototype('scalar')
+            ->end();
+    }
+
+    /**
+     * @return ArrayNodeDefinition
+     */
     private function defaultQueryOptions()
     {
         $treeBuilder = new TreeBuilder();
@@ -45,6 +60,9 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
+    /**
+     * @return ArrayNodeDefinition
+     */
     private function guzzleSettings()
     {
         $treeBuilder = new TreeBuilder();
