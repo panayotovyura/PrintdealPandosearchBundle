@@ -13,7 +13,8 @@ class GuzzleClientLocator
      * @param string $localization
      * @param ClientInterface $client
      */
-    public function addHttpClient(string $localization, ClientInterface $client) {
+    public function addHttpClient(string $localization, ClientInterface $client)
+    {
         $this->clients[$localization] = $client;
     }
 
