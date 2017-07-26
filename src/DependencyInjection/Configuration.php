@@ -37,7 +37,9 @@ class Configuration implements ConfigurationInterface
      */
     private function localizationsTree()
     {
-        return (new TreeBuilder())->root('localizations')->prototype('scalar')->end();
+        return (new TreeBuilder())->root('localizations')
+                ->prototype('scalar')
+            ->end();
     }
 
     /**
