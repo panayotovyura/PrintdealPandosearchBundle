@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class HttpClientsPass implements CompilerPassInterface
 {
+    const HTTP_CLIENT_LOCATOR_SERVICE_NAME = 'printdeal_pandosearch.locator.http_client_locator';
+
     const GUZZLE_CLIENTS_SERVICES_NAME = 'csa_guzzle.client.' . PrintdealPandosearchExtension::GUZZLE_CLIENT_NAME;
 
     /**
@@ -18,10 +20,10 @@ class HttpClientsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has(HttpClientLocator::class)) {
+        if (!$container->has(self::HTTP_CLIENT_LOCATOR_SERVICE_NAME)) {
             return;
         }
-        $locatorService = $container->findDefinition(HttpClientLocator::class);
+        $locatorService = $container->findDefinition(self::HTTP_CLIENT_LOCATOR_SERVICE_NAME);
 
         $guzzleClientNamePattern = sprintf(self::GUZZLE_CLIENTS_SERVICES_NAME, '');
 
