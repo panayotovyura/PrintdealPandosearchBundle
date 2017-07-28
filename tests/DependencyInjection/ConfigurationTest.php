@@ -39,6 +39,10 @@ class ConfigurationTest extends TestCase
                         'connect_timeout' => 2,
                     ],
                     'localizations' => [],
+                    'search' => [
+                        'host' => 'search.enrise.com',
+                        'protocol' => 'https',
+                    ],
                 ],
             ],
             [
@@ -53,6 +57,10 @@ class ConfigurationTest extends TestCase
                         'connect_timeout' => 2,
                     ],
                     'localizations' => ['nl', 'en'],
+                    'search' => [
+                        'host' => 'search.enrise.com',
+                        'protocol' => 'https',
+                    ],
                 ],
             ],
             [
@@ -64,7 +72,11 @@ class ConfigurationTest extends TestCase
                     ],
                     'query_settings' => [
                         'track' => false,
-                    ]
+                    ],
+                    'search' => [
+                        'protocol' => 'http',
+                        'host' => 'google.com',
+                    ],
                 ],
                 [
                     'company_name' => 'drukwerkdeal.nl',
@@ -76,6 +88,10 @@ class ConfigurationTest extends TestCase
                         'track' => false,
                     ],
                     'localizations' => [],
+                    'search' => [
+                        'protocol' => 'http',
+                        'host' => 'google.com',
+                    ],
                 ],
             ],
         ];

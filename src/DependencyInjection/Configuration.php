@@ -19,9 +19,11 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('company_name')
+                    ->info('Company domain search provided for.')
                     ->isRequired()
                     ->cannotBeEmpty()
                 ->end()
+                ->append($this->hostSettings())
                 ->append($this->guzzleSettings())
                 ->append($this->defaultQueryOptions())
                 ->append($this->localizationsTree())
@@ -30,6 +32,31 @@ class Configuration implements ConfigurationInterface
         ;
 
         return $treeBuilder;
+    }
+
+    /**
+     * @return ArrayNodeDefinition
+     */
+    private function hostSettings()
+    {
+        $tree = new TreeBuilder();
+        $node = $tree->root('search');
+
+        $node->addDefaultsIfNotSet()
+            ->children()
+                ->scalarNode('protocol')
+                    ->defaultValue('https')
+                ->end()
+                ->scalarNode('host')
+                    ->defaultValue('search.enrise.com')
+                    ->info(
+                        'Search API host. Can be used to activate search at Enrise acceptance environment.'
+                    )
+                ->end()
+            ->end()
+        ->end();
+
+        return $node;
     }
 
     /**
