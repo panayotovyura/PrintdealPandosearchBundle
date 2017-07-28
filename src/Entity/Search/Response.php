@@ -19,13 +19,13 @@ class Response
      * @var array
      * @Serializer\Type("array")
      */
-    private $hits;
+    private $hits = [];
 
     /**
      * @var array
      * @Serializer\Type("array")
      */
-    private $facets;
+    private $facets = [];
 
     /**
      * @var SearchCriteria

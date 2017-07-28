@@ -12,7 +12,7 @@ class Response
      * @var array
      * @Serializer\Type("array")
      */
-    private $hits;
+    private $hits = [];
 
     /**
      * @var ArrayCollection<Printdeal\PandosearchBundle\Entity\Suggestion>
