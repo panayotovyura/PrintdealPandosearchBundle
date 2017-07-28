@@ -110,6 +110,7 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
     }
 
     /**
+     * @param string $searchProtocol
      * @param string $searchHost
      * @param string $companyName
      * @param array $config

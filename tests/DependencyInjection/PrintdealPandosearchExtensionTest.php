@@ -100,6 +100,10 @@ class PrintdealPandosearchExtensionTest extends TestCase
             'guzzle_client' => [
                 'timeout' => 15,
                 'connect_timeout' => 2,
+            ],
+            'search' => [
+                'protocol' => 'https',
+                'host' => 'search.enrise.com',
             ]
         ]);
         $container->compile();
