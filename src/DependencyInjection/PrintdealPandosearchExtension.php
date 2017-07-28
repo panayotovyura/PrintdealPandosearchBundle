@@ -13,7 +13,7 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
     const CONFIGS_PATH = __DIR__.'/../Resources/config';
     const DEFAULT_GUZZLE_TIMEOUT = 15;
     const DEFAULT_GUZZLE_CONNECT_TIMEOUT = 2;
-    const BASE_URL_TEMPLATE = 'https://search.enrise.com/%s/';
+    const BASE_URL_TEMPLATE = '%s://%s/%s/';
     const LOCALIZED_URL_TEMPLATE = self::BASE_URL_TEMPLATE . '%s/';
 
     const GUZZLE_CLIENT_NAME = 'printdeal.pandosearch_client.%s';
@@ -57,11 +57,15 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
         $config = $this->getConfig($container);
         $localizations = $config['localizations'] ?? [];
         $companyName = (string)$config['company_name'];
+        $searchProtocol = (string)$config['search']['protocol'];
+        $searchHost = (string)$config['search']['host'];
         $guzzleConfig = $config['guzzle_client'];
         if (!$localizations) {
             return [
                 sprintf(self::GUZZLE_CLIENT_NAME, 'default') => [
                     'config' => $this->getClientConfiguration(
+                        $searchProtocol,
+                        $searchHost,
                         $companyName,
                         $guzzleConfig
                     ),
@@ -76,6 +80,8 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
                 [
                     sprintf(self::GUZZLE_CLIENT_NAME, $localization) => [
                         'config' => $this->getClientConfiguration(
+                            $searchProtocol,
+                            $searchHost,
                             $companyName,
                             $guzzleConfig,
                             $localization
@@ -104,28 +110,45 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
     }
 
     /**
+     * @param string $searchHost
      * @param string $companyName
      * @param array $config
      * @param string $localization
      * @return array
      */
-    private function getClientConfiguration(string $companyName, array $config, string $localization = ''): array
-    {
+    private function getClientConfiguration(
+        string $searchProtocol,
+        string $searchHost,
+        string $companyName,
+        array $config,
+        string $localization = ''
+    ): array {
         return [
             'timeout' => $config['timeout'] ?? self::DEFAULT_GUZZLE_TIMEOUT,
             'connect_timeout' => $config['connect_timeout'] ?? self::DEFAULT_GUZZLE_CONNECT_TIMEOUT,
-            'base_uri' => $this->getBaseUrl($companyName, $localization),
+            'base_uri' => $this->getBaseUrl($searchProtocol, $searchHost, $companyName, $localization),
         ];
     }
 
     /**
+     * @param string $searchProtocol
+     * @param string $searchHost
      * @param string $companyName
      * @param string $localization
      * @return string
      */
-    private function getBaseUrl(string $companyName, string $localization): string
-    {
-        return $localization ? sprintf(self::LOCALIZED_URL_TEMPLATE, $companyName, $localization) :
-            sprintf(self::BASE_URL_TEMPLATE, $companyName);
+    private function getBaseUrl(
+        string $searchProtocol,
+        string $searchHost,
+        string $companyName,
+        string $localization
+    ): string {
+        return $localization ? sprintf(
+            self::LOCALIZED_URL_TEMPLATE,
+            $searchProtocol,
+            $searchHost,
+            $companyName,
+            $localization
+        ) : sprintf(self::BASE_URL_TEMPLATE, $searchProtocol, $searchHost, $companyName);
     }
 }
