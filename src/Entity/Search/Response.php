@@ -118,6 +118,6 @@ class Response
      */
     public function getSuggestions(): ArrayCollection
     {
-        return $this->suggestions;
+        return $this->suggestions ?? (new ArrayCollection());
     }
 }
