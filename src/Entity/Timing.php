@@ -10,20 +10,20 @@ class Timing
      * @var float
      * @Serializer\Type("float")
      */
-    private $search;
+    private $search = 0.0;
 
     /**
      * @var float
      * @Serializer\Type("float")
      * @Serializer\SerializedName("search:took")
      */
-    private $searchTook;
+    private $searchTook = 0.0;
 
     /**
      * @var float
      * @Serializer\Type("float")
      */
-    private $request;
+    private $request = 0.0;
 
     /**
      * @return float

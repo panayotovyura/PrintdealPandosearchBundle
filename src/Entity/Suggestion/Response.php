@@ -47,6 +47,6 @@ class Response
      */
     public function getTiming(): Timing
     {
-        return $this->timing;
+        return $this->timing ?? (new Timing());
     }
 }

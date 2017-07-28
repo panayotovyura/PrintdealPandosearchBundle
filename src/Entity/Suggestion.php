@@ -22,7 +22,7 @@ class Suggestion
     /**
      * @return string
      */
-    public function getText(): string
+    public function getText()
     {
         return $this->text;
     }
@@ -30,7 +30,7 @@ class Suggestion
     /**
      * @return string
      */
-    public function getHtml(): string
+    public function getHtml()
     {
         return $this->html;
     }
