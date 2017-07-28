@@ -2,7 +2,6 @@
 
 namespace Printdeal\PandosearchBundle\Service;
 
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\TransferException;
 use JMS\Serializer\SerializerInterface;
 use Printdeal\PandosearchBundle\Builder\SearchCriteriaBuilder;

@@ -12,7 +12,7 @@ class Response
      * @var array
      * @Serializer\Type("array")
      */
-    private $hits;
+    private $hits = [];
 
     /**
      * @var ArrayCollection<Printdeal\PandosearchBundle\Entity\Suggestion>
@@ -39,7 +39,7 @@ class Response
      */
     public function getSuggestions(): ArrayCollection
     {
-        return $this->suggestions;
+        return $this->suggestions ?? (new ArrayCollection());
     }
 
     /**
@@ -47,6 +47,6 @@ class Response
      */
     public function getTiming(): Timing
     {
-        return $this->timing;
+        return $this->timing ?? (new Timing());
     }
 }

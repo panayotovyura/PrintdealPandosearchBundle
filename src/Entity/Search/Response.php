@@ -19,13 +19,13 @@ class Response
      * @var array
      * @Serializer\Type("array")
      */
-    private $hits;
+    private $hits = [];
 
     /**
      * @var array
      * @Serializer\Type("array")
      */
-    private $facets;
+    private $facets = [];
 
     /**
      * @var SearchCriteria
@@ -110,7 +110,7 @@ class Response
      */
     public function getTiming(): Timing
     {
-        return $this->timing;
+        return $this->timing ?? (new Timing());
     }
 
     /**
@@ -118,6 +118,6 @@ class Response
      */
     public function getSuggestions(): ArrayCollection
     {
-        return $this->suggestions;
+        return $this->suggestions ?? (new ArrayCollection());
     }
 }
