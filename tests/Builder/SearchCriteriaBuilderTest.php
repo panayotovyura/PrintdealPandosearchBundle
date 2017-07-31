@@ -39,12 +39,12 @@ class SearchCriteriaBuilderTest extends AbstractBuilderTest
             ],
             [
                 (new SearchCriteria())->setQuery('facets test')
-                    ->setFacets(['pages']),
+                    ->setFacets(['type' => ['pages']]),
                 [
                     'q' => 'facets test',
                     'size' => 10,
                     'page' => 1,
-                    'facets' => ['pages'],
+                    'facets' => ['type' => ['pages']],
                     'sort' => 'relevancy',
                 ]
             ],
