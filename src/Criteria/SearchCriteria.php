@@ -39,8 +39,8 @@ final class SearchCriteria implements SerializableInterface
     private $noCorrect;
 
     /**
-     * @var array<string, string>
-     * @Serializer\Type("array<string, string>")
+     * @var array<string, array>
+     * @Serializer\Type("array<string, array>")
      */
     private $facets = [];
 
