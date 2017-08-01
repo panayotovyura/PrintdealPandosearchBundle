@@ -6,7 +6,7 @@ use Throwable;
 
 class ClientNotFoundException extends RequestException
 {
-    const MESSAGE_TEMPLATE = 'Http Client for %s localization not found';
+    const MESSAGE_TEMPLATE = 'Http Client for \'%s\' localization not found';
 
     /**
      * ClientNotFoundException constructor.
@@ -16,6 +16,6 @@ class ClientNotFoundException extends RequestException
      */
     public function __construct(string $localization, $code = 0, Throwable $previous = null)
     {
-        parent::__construct(sprintf(self::MESSAGE_TEMPLATE, $localization), $code, $previous);
+        parent::__construct(sprintf(static::MESSAGE_TEMPLATE, $localization), $code, $previous);
     }
 }

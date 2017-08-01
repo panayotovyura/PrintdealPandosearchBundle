@@ -10,6 +10,7 @@ use Printdeal\PandosearchBundle\Criteria\SearchCriteria;
 use Printdeal\PandosearchBundle\Criteria\SuggestCriteria;
 use Printdeal\PandosearchBundle\Entity\Search\Response as SearchResponse;
 use Printdeal\PandosearchBundle\Entity\Suggestion\Response as SuggestionResponse;
+use Printdeal\PandosearchBundle\Exception\ClientNotFoundException;
 use Printdeal\PandosearchBundle\Exception\RequestException;
 use Printdeal\PandosearchBundle\Exception\SerializationException;
 use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
@@ -104,6 +105,7 @@ class SearchService
      * @return array|SearchResponse|SuggestionResponse
      * @throws RequestException
      * @throws SerializationException
+     * @throws ClientNotFoundException
      */
     private function getResponse(
         string $url,

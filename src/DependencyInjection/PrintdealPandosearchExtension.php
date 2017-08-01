@@ -34,6 +34,10 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
                 $searchServiceDefinition->replaceArgument(1, $mergedConfig['query_settings']);
             }
         }
+
+        $localizations = $this->getLocalizations($mergedConfig);
+        $container->getDefinition('printdeal_pandosearch.locator.http_client_locator')
+            ->setArgument(0, $localizations);
     }
 
     /**
