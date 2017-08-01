@@ -65,4 +65,18 @@ class HttpClientLocatorTest extends TestCase
 
         $this->assertEquals($clientMock, $clientLocator->getClient($localization));
     }
+
+    public function testClientForSingleLanguageFound()
+    {
+        $localization = 'default';
+
+        $clientMock = $this->getMockBuilder(ClientInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $clientLocator = $this->getClientLocator();
+        $clientLocator->addHttpClient($localization, $clientMock);
+
+        $this->assertEquals($clientMock, $clientLocator->getClient('nl'));
+    }
 }

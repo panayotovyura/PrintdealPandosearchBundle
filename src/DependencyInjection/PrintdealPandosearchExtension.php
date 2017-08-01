@@ -17,6 +17,7 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
     const LOCALIZED_URL_TEMPLATE = self::BASE_URL_TEMPLATE . '%s/';
 
     const GUZZLE_CLIENT_NAME = 'printdeal.pandosearch_client.%s';
+    const DEFAULT_GUZZLE_CLIENT_SUFFIX = 'default';
 
     /**
      * @inheritDoc
@@ -55,14 +56,14 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
     private function getClientsConfiguration(ContainerBuilder $container)
     {
         $config = $this->getConfig($container);
-        $localizations = $config['localizations'] ?? [];
+        $localizations = $this->getLocalizations($config);
         $companyName = (string)$config['company_name'];
         $searchProtocol = (string)$config['search']['protocol'];
         $searchHost = (string)$config['search']['host'];
         $guzzleConfig = $config['guzzle_client'];
         if (!$localizations) {
             return [
-                sprintf(self::GUZZLE_CLIENT_NAME, 'default') => [
+                sprintf(self::GUZZLE_CLIENT_NAME, self::DEFAULT_GUZZLE_CLIENT_SUFFIX) => [
                     'config' => $this->getClientConfiguration(
                         $searchProtocol,
                         $searchHost,
@@ -151,5 +152,14 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
             $companyName,
             $localization
         ) : sprintf(self::BASE_URL_TEMPLATE, $searchProtocol, $searchHost, $companyName);
+    }
+
+    /**
+     * @param array $config
+     * @return array
+     */
+    private function getLocalizations(array $config): array
+    {
+        return isset($config['localizations']) && count($config['localizations']) > 1 ? $config['localizations'] : [];
     }
 }
