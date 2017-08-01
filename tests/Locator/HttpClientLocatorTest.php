@@ -5,16 +5,18 @@ namespace Tests\Printdeal\PandosearchBundle\Locator;
 use GuzzleHttp\ClientInterface;
 use PHPUnit\Framework\TestCase;
 use Printdeal\PandosearchBundle\Exception\ClientNotFoundException;
+use Printdeal\PandosearchBundle\Exception\UnknownLocalizationException;
 use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
 
 class HttpClientLocatorTest extends TestCase
 {
     /**
+     * @param array $localizations
      * @return HttpClientLocator
      */
-    private function getClientLocator(): HttpClientLocator
+    private function getClientLocator(array $localizations = []): HttpClientLocator
     {
-        return new HttpClientLocator();
+        return new HttpClientLocator($localizations);
     }
 
     /**
@@ -64,5 +66,34 @@ class HttpClientLocatorTest extends TestCase
         $clientLocator->addHttpClient($localization, $clientMock);
 
         $this->assertEquals($clientMock, $clientLocator->getClient($localization));
+    }
+
+    public function testClientForSingleLanguageFound()
+    {
+        $localization = 'default';
+
+        $clientMock = $this->getMockBuilder(ClientInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $clientLocator = $this->getClientLocator();
+        $clientLocator->addHttpClient($localization, $clientMock);
+
+        $this->assertEquals($clientMock, $clientLocator->getClient('nl'));
+    }
+
+    public function testClientForUnknownLocalization()
+    {
+        $localization = 'en';
+        $unknownLocalization = 'ch';
+
+        $clientLocator = $this->getClientLocator([$localization]);
+
+        $this->expectException(UnknownLocalizationException::class);
+        $this->expectExceptionMessage(sprintf(
+            UnknownLocalizationException::MESSAGE_TEMPLATE,
+            $unknownLocalization)
+        );
+        $clientLocator->getClient($unknownLocalization);
     }
 }
