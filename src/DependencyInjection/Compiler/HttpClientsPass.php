@@ -4,7 +4,6 @@ namespace Printdeal\PandosearchBundle\DependencyInjection\Compiler;
 
 use Csa\Bundle\GuzzleBundle\DependencyInjection\CompilerPass\MiddlewarePass;
 use Printdeal\PandosearchBundle\DependencyInjection\PrintdealPandosearchExtension;
-use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;

@@ -16,7 +16,7 @@ class PrintdealPandosearchExtensionTest extends TestCase
      * @param array $expectedServices
      * @dataProvider localizationsProvider
      */
-    public function testLoadConfigurationWithMultipleLanguages(array $localization, array $expectedServices)
+    public function testWithLanguages(array $localization, array $expectedServices)
     {
         $container = $this->createContainer();
         $container->registerExtension(new CsaGuzzleExtension());
@@ -46,6 +46,31 @@ class PrintdealPandosearchExtensionTest extends TestCase
                 [sprintf(HttpClientsPass::GUZZLE_CLIENTS_SERVICES_NAME, 'default')]
             ]
         ];
+    }
+
+    /**
+     * @param array $localizations
+     * @param array $expectedServices
+     * @dataProvider localizationsProvider
+     */
+    public function testWithLanguagesFromParameter(
+        array $localizations,
+        array $expectedServices
+    ) {
+        $parameterName = 'parameter.printdeal.localization';
+
+        $container = $this->createContainer();
+        $container->registerExtension(new CsaGuzzleExtension());
+        $container->registerExtension(new PrintdealPandosearchExtension());
+        $container->setParameter($parameterName, $localizations);
+        $container->loadFromExtension('printdeal_pandosearch', [
+            'localizations' => '%' . $parameterName . '%',
+        ]);
+        $this->compileContainer($container);
+
+        foreach ($expectedServices as $expectedService) {
+            static::assertTrue($container->hasDefinition($expectedService));
+        }
     }
 
     /**
