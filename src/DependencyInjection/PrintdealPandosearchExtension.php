@@ -173,10 +173,11 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
         $localizationParameter = [];
         if (is_string($localizations) &&
             $container instanceof ContainerBuilder &&
-            preg_match('/^%(.*)%$/', $localizations, $localizationParameter)) {
+            preg_match('/^%(.*)%$/', $localizations, $localizationParameter) &&
+            $container->hasParameter($localizationParameter[1])) {
             $localizations = $container->getParameter($localizationParameter[1]);
         }
 
-        return count($localizations) > 1 ? $localizations : [];
+        return is_array($localizations) && count($localizations) > 1 ? $localizations : [];
     }
 }
