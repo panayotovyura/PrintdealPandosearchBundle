@@ -36,7 +36,8 @@
         "sebastian/phpcpd": "^3.0",
         "phpmd/phpmd" : "^2.6",
         "pdepend/pdepend": "^2.5",
-        "phploc/phploc": "^4.0"
+        "phploc/phploc": "^4.0",
+        "phpstan/phpstan": "^0.8"
     },
     "config": {
         "bin-dir": "bin"
