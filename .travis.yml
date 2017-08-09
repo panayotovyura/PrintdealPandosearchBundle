@@ -18,4 +18,3 @@ script:
 after_success:
   - ./bin/pdepend --summary-xml=/tmp/summary.xml --jdepend-chart=/tmp/jdepend.svg --overview-pyramid=/tmp/pyramid.svg src
   - ./bin/phploc src
-  - cat ./clover.xml
