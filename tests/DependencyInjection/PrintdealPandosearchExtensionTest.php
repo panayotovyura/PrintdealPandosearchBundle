@@ -3,6 +3,7 @@
 namespace Tests\Printdeal\PandosearchBundle\DependencyInjection;
 
 use Csa\Bundle\GuzzleBundle\DependencyInjection\CsaGuzzleExtension;
+use GuzzleHttp\ClientInterface;
 use PHPUnit\Framework\TestCase;
 use Printdeal\PandosearchBundle\DependencyInjection\Compiler\HttpClientsPass;
 use Printdeal\PandosearchBundle\DependencyInjection\PrintdealPandosearchExtension;
@@ -27,7 +28,11 @@ class PrintdealPandosearchExtensionTest extends TestCase
         $this->compileContainer($container);
 
         foreach ($expectedServices as $expectedService) {
-            static::assertTrue($container->hasDefinition($expectedService));
+            static::assertTrue($container->hasDefinition($expectedService['service_id']));
+            static::assertBaseUri(
+                $expectedService['base_uri'],
+                $container->get($expectedService['service_id'])
+            );
         }
     }
 
@@ -37,13 +42,25 @@ class PrintdealPandosearchExtensionTest extends TestCase
             [
                 ['nl', 'fr'],
                 [
-                    sprintf(HttpClientsPass::GUZZLE_CLIENTS_SERVICES_NAME, 'nl'),
-                    sprintf(HttpClientsPass::GUZZLE_CLIENTS_SERVICES_NAME, 'fr')
+                    [
+                        'service_id' => sprintf(HttpClientsPass::GUZZLE_CLIENTS_SERVICES_NAME, 'nl'),
+                        'base_uri' => 'https://search.enrise.com/drukwerkdeal.nl-nl/',
+                    ],
+                    [
+                        'service_id' => sprintf(HttpClientsPass::GUZZLE_CLIENTS_SERVICES_NAME, 'fr'),
+                        'base_uri' => 'https://search.enrise.com/drukwerkdeal.nl-fr/',
+                    ],
+
                 ]
             ],
             [
                 [],
-                [sprintf(HttpClientsPass::GUZZLE_CLIENTS_SERVICES_NAME, 'default')]
+                [
+                    [
+                        'service_id' => sprintf(HttpClientsPass::GUZZLE_CLIENTS_SERVICES_NAME, 'default'),
+                        'base_uri' => 'https://search.enrise.com/drukwerkdeal.nl/',
+                    ]
+                ],
             ]
         ];
     }
@@ -69,7 +86,11 @@ class PrintdealPandosearchExtensionTest extends TestCase
         $this->compileContainer($container);
 
         foreach ($expectedServices as $expectedService) {
-            static::assertTrue($container->hasDefinition($expectedService));
+            static::assertTrue($container->hasDefinition($expectedService['service_id']));
+            static::assertBaseUri(
+                $expectedService['base_uri'],
+                $container->get($expectedService['service_id'])
+            );
         }
     }
 
@@ -154,5 +175,14 @@ class PrintdealPandosearchExtensionTest extends TestCase
         foreach ($builderIds as $builderId) {
             $this->assertEquals($queryOverride, $container->getDefinition($builderId)->getArgument(1));
         }
+    }
+
+    /**
+     * @param string $expected
+     * @param ClientInterface $client
+     */
+    private static function assertBaseUri(string $expected, ClientInterface $client)
+    {
+        static::assertEquals($expected, (string)($client->getConfig())['base_uri']);
     }
 }
