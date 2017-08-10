@@ -60,7 +60,7 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
     private function getClientsConfiguration(ContainerBuilder $container)
     {
         $config = $this->getConfig($container);
-        $localizations = $this->getLocalizations($config);
+        $localizations = $this->getLocalizations($config, $container);
         $companyName = (string)$config['company_name'];
         $searchProtocol = (string)$config['search']['protocol'];
         $searchHost = (string)$config['search']['host'];
@@ -160,10 +160,24 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
 
     /**
      * @param array $config
+     * @param ContainerBuilder|null $container
      * @return array
      */
-    private function getLocalizations(array $config): array
+    private function getLocalizations(array $config, ContainerBuilder $container = null): array
     {
-        return isset($config['localizations']) && count($config['localizations']) > 1 ? $config['localizations'] : [];
+        if (!isset($config['localizations'])) {
+            return [];
+        }
+        $localizations = $config['localizations'];
+
+        $localizationParameter = [];
+        if (is_string($localizations) &&
+            $container instanceof ContainerBuilder &&
+            preg_match('/^%(.*)%$/', $localizations, $localizationParameter) &&
+            $container->hasParameter($localizationParameter[1])) {
+            $localizations = $container->getParameter($localizationParameter[1]);
+        }
+
+        return is_array($localizations) && count($localizations) > 1 ? $localizations : [];
     }
 }
