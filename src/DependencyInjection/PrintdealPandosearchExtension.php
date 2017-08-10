@@ -13,8 +13,9 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
     const CONFIGS_PATH = __DIR__.'/../Resources/config';
     const DEFAULT_GUZZLE_TIMEOUT = 15;
     const DEFAULT_GUZZLE_CONNECT_TIMEOUT = 2;
-    const BASE_URL_TEMPLATE = '%s://%s/%s/';
-    const LOCALIZED_URL_TEMPLATE = self::BASE_URL_TEMPLATE . '%s/';
+    const URL_BASIS = '%s://%s/%s';
+    const BASE_URL_TEMPLATE = self::URL_BASIS . '/';
+    const LOCALIZED_URL_TEMPLATE = self::URL_BASIS . '-%s/';
 
     const GUZZLE_CLIENT_NAME = 'printdeal.pandosearch_client.%s';
     const DEFAULT_GUZZLE_CLIENT_SUFFIX = 'default';
