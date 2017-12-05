@@ -96,10 +96,10 @@ class PrintdealPandosearchExtensionTest extends TestCase
     }
 
     /**
-     * @param $alias
+     * @param string $alias
      * @dataProvider aliasesProvider
      */
-    public function testAliasExist($alias)
+    public function testAliasExist(string $alias)
     {
         $container = $this->createContainer();
         $container->registerExtension(new PrintdealPandosearchExtension());
