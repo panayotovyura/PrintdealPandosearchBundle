@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Printdeal\PandosearchBundle\DependencyInjection\Compiler\HttpClientsPass;
 use Printdeal\PandosearchBundle\DependencyInjection\PrintdealPandosearchExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class PrintdealPandosearchExtensionTest extends TestCase
@@ -31,7 +32,7 @@ class PrintdealPandosearchExtensionTest extends TestCase
             static::assertTrue($container->hasDefinition($expectedService['service_id']));
             static::assertBaseUri(
                 $expectedService['base_uri'],
-                $container->get($expectedService['service_id'])
+                $container->getDefinition($expectedService['service_id'])
             );
         }
     }
@@ -89,16 +90,16 @@ class PrintdealPandosearchExtensionTest extends TestCase
             static::assertTrue($container->hasDefinition($expectedService['service_id']));
             static::assertBaseUri(
                 $expectedService['base_uri'],
-                $container->get($expectedService['service_id'])
+                $container->getDefinition($expectedService['service_id'])
             );
         }
     }
 
     /**
-     * @param $alias
+     * @param string $alias
      * @dataProvider aliasesProvider
      */
-    public function testAliasExist($alias)
+    public function testAliasExist(string $alias)
     {
         $container = $this->createContainer();
         $container->registerExtension(new PrintdealPandosearchExtension());
@@ -179,10 +180,10 @@ class PrintdealPandosearchExtensionTest extends TestCase
 
     /**
      * @param string $expected
-     * @param ClientInterface $client
+     * @param Definition $definition
      */
-    private static function assertBaseUri(string $expected, ClientInterface $client)
+    private static function assertBaseUri(string $expected, Definition $definition)
     {
-        static::assertEquals($expected, (string)($client->getConfig())['base_uri']);
+        static::assertEquals($expected, (string)($definition->getArgument(0)['base_uri']));
     }
 }
