@@ -70,7 +70,8 @@ class ResponseDeserializationSubscriber implements EventSubscriberInterface
     /**
      * @param ObjectEvent $event
      */
-    public function postDeserializeSearchResponse(ObjectEvent $event) {
+    public function postDeserializeSearchResponse(ObjectEvent $event)
+    {
         if (!$this->doesConverterExist($this->searchConverter)) {
             return;
         }
@@ -86,14 +87,14 @@ class ResponseDeserializationSubscriber implements EventSubscriberInterface
     /**
      * @param ObjectEvent $event
      */
-    public function postDeserializeSuggestionResponse(ObjectEvent $event) {
+    public function postDeserializeSuggestionResponse(ObjectEvent $event)
+    {
         if (!$this->doesConverterExist($this->suggestionConverter)) {
             return;
         }
 
         $response = $event->getObject();
         if (!$response instanceof Entity\Suggestion\Response) {
-
             return;
         }
         $hits = $this->hitsConverters[$this->suggestionConverter]->convert($response->getHits());
