@@ -74,6 +74,16 @@ class Response
     }
 
     /**
+     * @param array $hits
+     * @return Response
+     */
+    public function setHits(array $hits): Response
+    {
+        $this->hits = $hits;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getFacets(): array
