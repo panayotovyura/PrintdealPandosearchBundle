@@ -31,3 +31,6 @@ services:
             - '@jms_serializer.serializer'
 
     printdeal_pandosearch: '@printdeal_pandosearch.service.search_service'
+
+    printdeal_pandosearch.subscriber.response_deserialization_subscriber:
+        class: Printdeal\PandosearchBundle\EventSubscriber\ResponseDeserializationSubscriber
