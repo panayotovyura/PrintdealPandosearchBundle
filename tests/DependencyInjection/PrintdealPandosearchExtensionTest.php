@@ -3,16 +3,20 @@
 namespace Tests\Printdeal\PandosearchBundle\DependencyInjection;
 
 use Csa\Bundle\GuzzleBundle\DependencyInjection\CsaGuzzleExtension;
-use GuzzleHttp\ClientInterface;
 use PHPUnit\Framework\TestCase;
 use Printdeal\PandosearchBundle\DependencyInjection\Compiler\HttpClientsPass;
 use Printdeal\PandosearchBundle\DependencyInjection\PrintdealPandosearchExtension;
+use Printdeal\PandosearchBundle\Entity\Search\DefaultResponse as SearchDeafultResponse;
+use Printdeal\PandosearchBundle\Entity\Suggestion\DefaultResponse as SuggestionDefaultResponse;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class PrintdealPandosearchExtensionTest extends TestCase
 {
+    const SEARCH_DESERIALIZATION_ENTITY = 'printdeal_pandosearch.deserialization_parameters.search_response_entity';
+    const SUGGESTION_DESERIALIZATION_ENTITY = 'printdeal_pandosearch.deserialization_parameters.suggestion_response_entity';
+
     /**
      * @param array $localization
      * @param array $expectedServices
@@ -35,6 +39,14 @@ class PrintdealPandosearchExtensionTest extends TestCase
                 $container->getDefinition($expectedService['service_id'])
             );
         }
+        static::assertEquals(
+            SearchDeafultResponse::class,
+            $container->getParameter(self::SEARCH_DESERIALIZATION_ENTITY)
+        );
+        static::assertEquals(
+            SuggestionDefaultResponse::class,
+            $container->getParameter(self::SUGGESTION_DESERIALIZATION_ENTITY)
+        );
     }
 
     public function localizationsProvider()
@@ -93,6 +105,14 @@ class PrintdealPandosearchExtensionTest extends TestCase
                 $container->getDefinition($expectedService['service_id'])
             );
         }
+        static::assertEquals(
+            SuggestionDefaultResponse::class,
+            $container->getParameter(self::SUGGESTION_DESERIALIZATION_ENTITY)
+        );
+        static::assertEquals(
+            SearchDeafultResponse::class,
+            $container->getParameter(self::SEARCH_DESERIALIZATION_ENTITY)
+        );
     }
 
     /**
@@ -108,6 +128,14 @@ class PrintdealPandosearchExtensionTest extends TestCase
 
         static::assertTrue(
             $container->hasAlias($alias)
+        );
+        static::assertEquals(
+            SearchDeafultResponse::class,
+            $container->getParameter(self::SEARCH_DESERIALIZATION_ENTITY)
+        );
+        static::assertEquals(
+            SuggestionDefaultResponse::class,
+            $container->getParameter(self::SUGGESTION_DESERIALIZATION_ENTITY)
         );
     }
 
@@ -176,6 +204,14 @@ class PrintdealPandosearchExtensionTest extends TestCase
         foreach ($builderIds as $builderId) {
             $this->assertEquals($queryOverride, $container->getDefinition($builderId)->getArgument(1));
         }
+        static::assertEquals(
+            SearchDeafultResponse::class,
+            $container->getParameter(self::SEARCH_DESERIALIZATION_ENTITY)
+        );
+        static::assertEquals(
+            SuggestionDefaultResponse::class,
+            $container->getParameter(self::SUGGESTION_DESERIALIZATION_ENTITY)
+        );
     }
 
     /**
