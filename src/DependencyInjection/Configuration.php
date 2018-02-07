@@ -2,6 +2,8 @@
 
 namespace Printdeal\PandosearchBundle\DependencyInjection;
 
+use Printdeal\PandosearchBundle\Entity\Search\DefaultResponse as SearchResponse;
+use Printdeal\PandosearchBundle\Entity\Suggestion\DefaultResponse as SuggestionResponse;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -27,6 +29,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->guzzleSettings())
                 ->append($this->defaultQueryOptions())
                 ->append($this->localizationsTree())
+                ->append($this->getDeserializationEntity())
                 ->end()
             ->end()
         ;
@@ -102,6 +105,28 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->integerNode('connect_timeout')
                         ->defaultValue(PrintdealPandosearchExtension::DEFAULT_GUZZLE_CONNECT_TIMEOUT)
+                    ->end()
+                ->end()
+            ->end();
+
+        return $node;
+    }
+
+    /**
+     * @return ArrayNodeDefinition
+     */
+    private function getDeserializationEntity()
+    {
+        $treeBuilder = new TreeBuilder();
+        $node = $treeBuilder->root('deserialization_parameters');
+
+        $node->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('search_response_entity')
+                        ->defaultValue(SearchResponse::class)
+                    ->end()
+                    ->scalarNode('suggestion_response_entity')
+                        ->defaultValue(SuggestionResponse::class)
                     ->end()
                 ->end()
             ->end();
