@@ -33,7 +33,7 @@ services:
     printdeal_pandosearch: '@printdeal_pandosearch.service.search_service'
 
     printdeal_pandosearch.deserialization_handler.search_response:
-        class: Printdeal\PandosearchBundle\DeserializationHandler\SearchResponseDeserializationHandler
+        class: Printdeal\PandosearchBundle\DeserializationHandler\SearchDeserializationHandler
         arguments:
             - '%printdeal_pandosearch.deserialization_parameters.search_response_entity%'
             - '@jms_serializer.serializer'
@@ -41,7 +41,7 @@ services:
             - { name: 'jms_serializer.subscribing_handler' }
 
     printdeal_pandosearch.deserialization_handler.suggestion_response:
-        class: Printdeal\PandosearchBundle\DeserializationHandler\SuggestionResponseDeserializationHandler
+        class: Printdeal\PandosearchBundle\DeserializationHandler\SuggestionDeserializationHandler
         arguments:
             - '%printdeal_pandosearch.deserialization_parameters.suggestion_response_entity%'
             - '@jms_serializer.serializer'

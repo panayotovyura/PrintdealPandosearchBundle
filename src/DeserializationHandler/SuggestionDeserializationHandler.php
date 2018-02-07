@@ -6,7 +6,7 @@ use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
 use Printdeal\PandosearchBundle\Entity\Suggestion\Response;
 
-class SuggestionResponseDeserializationHandler extends AbstractResponseDeserializer implements SubscribingHandlerInterface
+class SuggestionDeserializationHandler extends AbstractResponseDeserializer implements SubscribingHandlerInterface
 {
     public static function getSubscribingMethods()
     {
