@@ -10,9 +10,8 @@ class Response
 {
     /**
      * @var array
-     * @Serializer\Type("array")
      */
-    private $hits = [];
+    protected $hits = [];
 
     /**
      * @var ArrayCollection<Printdeal\PandosearchBundle\Entity\Suggestion>

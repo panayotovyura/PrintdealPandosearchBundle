@@ -4,6 +4,8 @@ namespace Tests\Printdeal\PandosearchBundle\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Printdeal\PandosearchBundle\DependencyInjection\Configuration;
+use Printdeal\PandosearchBundle\Entity\Search\DefaultResponse as SearchDefaultResponse;
+use Printdeal\PandosearchBundle\Entity\Suggestion\DefaultResponse as SuggestionDefaultResponse;
 use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends TestCase
@@ -43,6 +45,10 @@ class ConfigurationTest extends TestCase
                         'host' => 'search.enrise.com',
                         'protocol' => 'https',
                     ],
+                    'deserialization_parameters' => [
+                        'search_response_entity' => SearchDefaultResponse::class,
+                        'suggestion_response_entity' => SuggestionDefaultResponse::class
+                    ]
                 ],
             ],
             [
@@ -61,6 +67,10 @@ class ConfigurationTest extends TestCase
                         'host' => 'search.enrise.com',
                         'protocol' => 'https',
                     ],
+                    'deserialization_parameters' => [
+                        'search_response_entity' => SearchDefaultResponse::class,
+                        'suggestion_response_entity' => SuggestionDefaultResponse::class
+                    ]
                 ],
             ],
             [
@@ -77,6 +87,10 @@ class ConfigurationTest extends TestCase
                         'protocol' => 'http',
                         'host' => 'google.com',
                     ],
+                    'deserialization_parameters' => [
+                        'search_response_entity' => 'customEntity',
+                        'suggestion_response_entity' => 'customEntity'
+                    ]
                 ],
                 [
                     'company_name' => 'drukwerkdeal.nl',
@@ -92,6 +106,10 @@ class ConfigurationTest extends TestCase
                         'protocol' => 'http',
                         'host' => 'google.com',
                     ],
+                    'deserialization_parameters' => [
+                        'search_response_entity' => 'customEntity',
+                        'suggestion_response_entity' => 'customEntity'
+                    ]
                 ],
             ],
         ];

@@ -69,7 +69,7 @@ class SearchService
     /**
      * @param SearchCriteria $criteria
      * @param string $localization
-     * @return SearchResponse
+     * @return mixed|SearchResponse
      */
     public function search(SearchCriteria $criteria, string $localization = 'default'): SearchResponse
     {
@@ -84,7 +84,7 @@ class SearchService
     /**
      * @param SuggestCriteria $criteria
      * @param string $localization
-     * @return SuggestionResponse
+     * @return mixed|SuggestionResponse
      */
     public function suggest(SuggestCriteria $criteria, string $localization = 'default'): SuggestionResponse
     {
@@ -101,7 +101,7 @@ class SearchService
      * @param string $localization
      * @param array $query
      * @param string $deserializationType
-     * @return array|SearchResponse|SuggestionResponse
+     * @return mixed|SearchResponse|SuggestionResponse
      * @throws RequestException
      * @throws SerializationException
      */
