@@ -51,6 +51,15 @@ printdeal_pandosearch:
         notiming: true
 ```
 
+for more convenience - optional parameter with a custom entity for deserialization can be used:
+
+``` yaml
+printdeal_pandosearch:
+    deserialization_parameters:
+            search_response_entity: Printdeal\PandosearchBundle\Entity\Search\CustomResponse
+            suggestion_response_entity: Printdeal\PandosearchBundle\Entity\Suggestion\CustomResponse
+```
+
 In controller you can use your search:
 
  ``` php
