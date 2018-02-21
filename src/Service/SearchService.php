@@ -69,7 +69,6 @@ class SearchService
     /**
      * @param SearchCriteria $criteria
      * @param string $localization
-     * @return SearchResponse
      * @throws RequestException
      * @throws SerializationException
      * @return mixed|SearchResponse
@@ -87,7 +86,6 @@ class SearchService
     /**
      * @param SuggestCriteria $criteria
      * @param string $localization
-     * @return SuggestionResponse
      * @throws RequestException
      * @throws SerializationException
      * @return mixed|SuggestionResponse
