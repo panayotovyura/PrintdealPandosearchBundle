@@ -70,8 +70,10 @@ class SearchService
      * @param SearchCriteria $criteria
      * @param string $localization
      * @return SearchResponse
+     * @throws RequestException
+     * @throws SerializationException
      */
-    public function search(SearchCriteria $criteria, string $localization = 'default'): SearchResponse
+    public function search(SearchCriteria $criteria, string $localization = 'default')
     {
         return $this->getResponse(
             self::SEARCH_ENDPOINT,
@@ -85,8 +87,10 @@ class SearchService
      * @param SuggestCriteria $criteria
      * @param string $localization
      * @return SuggestionResponse
+     * @throws RequestException
+     * @throws SerializationException
      */
-    public function suggest(SuggestCriteria $criteria, string $localization = 'default'): SuggestionResponse
+    public function suggest(SuggestCriteria $criteria, string $localization = 'default')
     {
         return $this->getResponse(
             self::SUGGEST_ENDPOINT,
