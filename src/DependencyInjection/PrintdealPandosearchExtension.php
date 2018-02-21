@@ -7,6 +7,8 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Printdeal\PandosearchBundle\Entity\Search\DefaultResponse as SearchResponse;
+use Printdeal\PandosearchBundle\Entity\Suggestion\DefaultResponse as SuggestionResponse;
 
 class PrintdealPandosearchExtension extends ConfigurableExtension implements PrependExtensionInterface
 {
@@ -39,6 +41,15 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
         $localizations = $this->getLocalizations($mergedConfig);
         $container->getDefinition('printdeal_pandosearch.locator.http_client_locator')
             ->setArgument(0, $localizations);
+        $container->setParameter(
+            'printdeal_pandosearch.deserialization_parameters.search_response_entity',
+            $mergedConfig['deserialization_parameters']['search_response_entity'] ?? SearchResponse::class
+        );
+
+        $container->setParameter(
+            'printdeal_pandosearch.deserialization_parameters.suggestion_response_entity',
+            $mergedConfig['deserialization_parameters']['suggestion_response_entity']?? SuggestionResponse::class
+        );
     }
 
     /**
