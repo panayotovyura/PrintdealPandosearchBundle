@@ -105,7 +105,7 @@ class SearchService
      * @param string $localization
      * @param array $query
      * @param string $deserializationType
-     * @return array|SearchResponse|SuggestionResponse
+     * @return mixed|SearchResponse|SuggestionResponse
      * @throws RequestException
      * @throws SerializationException
      */
