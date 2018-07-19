@@ -27,4 +27,3 @@ services:
         abstract: true
         tags:
             - { name: 'jms_serializer.subscribing_handler' }
-

@@ -44,7 +44,7 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
             $builderIds = array_keys($container->findTaggedServiceIds(QueryBuildersPass::BUILDER_TAG));
             foreach ($builderIds as $builderId) {
                 $builderDefinition = $container->getDefinition($builderId);
-                $builderDefinition->setArgument('queryOverrides', $mergedConfig['query_settings']);
+                $builderDefinition->setArgument(1, $mergedConfig['query_settings']);
             }
         }
 
