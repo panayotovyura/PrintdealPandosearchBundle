@@ -12,7 +12,7 @@ use Printdeal\PandosearchBundle\Entity\Suggestion\DefaultResponse as SuggestionR
 
 class PrintdealPandosearchExtension extends ConfigurableExtension implements PrependExtensionInterface
 {
-    const CONFIGS_PATH = __DIR__.'/../Resources/config';
+    const CONFIGS_PATH = __DIR__ . '/../Resources/config';
     const DEFAULT_GUZZLE_TIMEOUT = 15;
     const DEFAULT_GUZZLE_CONNECT_TIMEOUT = 2;
     const URL_BASIS = '%s://%s/%s';
@@ -48,7 +48,7 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
 
         $container->setParameter(
             'printdeal_pandosearch.deserialization_parameters.suggestion_response_entity',
-            $mergedConfig['deserialization_parameters']['suggestion_response_entity']?? SuggestionResponse::class
+            $mergedConfig['deserialization_parameters']['suggestion_response_entity'] ?? SuggestionResponse::class
         );
     }
 
