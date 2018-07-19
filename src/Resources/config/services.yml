@@ -1,3 +1,6 @@
+parameters:
+    printdeal.pandosearch.query_overrides: []
+
 services:
     _defaults:
         public: false
@@ -6,8 +9,10 @@ services:
 
     Printdeal\PandosearchBundle\Locator\HttpClientLocator: ~
 
-    Printdeal\PandosearchBundle\Builder\SearchCriteriaBuilder: ~
-    Printdeal\PandosearchBundle\Builder\SuggestCriteriaBuilder: ~
+    Printdeal\PandosearchBundle\Builder\SearchCriteriaBuilder:
+        $queryOverrides: '%printdeal.pandosearch.query_overrides%'
+    Printdeal\PandosearchBundle\Builder\SuggestCriteriaBuilder:
+        $queryOverrides: '%printdeal.pandosearch.query_overrides%'
     Printdeal\PandosearchBundle\Service\QueryBuilder: ~
 
     Printdeal\PandosearchBundle\Service\SearchService: ~
