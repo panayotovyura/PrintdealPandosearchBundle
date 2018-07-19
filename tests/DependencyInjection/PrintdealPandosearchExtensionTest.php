@@ -6,8 +6,6 @@ use Csa\Bundle\GuzzleBundle\DependencyInjection\CsaGuzzleExtension;
 use PHPUnit\Framework\TestCase;
 use Printdeal\PandosearchBundle\DependencyInjection\Compiler\HttpClientsPass;
 use Printdeal\PandosearchBundle\DependencyInjection\PrintdealPandosearchExtension;
-use Printdeal\PandosearchBundle\Entity\Search\DefaultResponse as SearchDeafultResponse;
-use Printdeal\PandosearchBundle\Entity\Suggestion\DefaultResponse as SuggestionDefaultResponse;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;

@@ -52,13 +52,13 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
 
         $container->getDefinition(SearchDeserializationHandler::class)
             ->setArgument(
-                'entity',
+                1,
                 $mergedConfig['deserialization_parameters']['search_response_entity'] ?? SearchResponse::class
             );
 
         $container->getDefinition(SuggestionDeserializationHandler::class)
             ->setArgument(
-                'entity',
+                1,
                 $mergedConfig['deserialization_parameters']['suggestion_response_entity'] ?? SuggestionResponse::class
             );
     }
