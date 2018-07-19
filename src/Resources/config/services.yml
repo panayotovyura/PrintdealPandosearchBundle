@@ -17,10 +17,14 @@ services:
         public: true
 
     Printdeal\PandosearchBundle\DeserializationHandler\SearchDeserializationHandler:
+        autowire: false
+        abstract: true
         tags:
             - { name: 'jms_serializer.subscribing_handler' }
 
     Printdeal\PandosearchBundle\DeserializationHandler\SuggestionDeserializationHandler:
+        autowire: false
+        abstract: true
         tags:
             - { name: 'jms_serializer.subscribing_handler' }
 

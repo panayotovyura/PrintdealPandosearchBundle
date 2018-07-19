@@ -2,6 +2,7 @@
 
 namespace Printdeal\PandosearchBundle\DependencyInjection;
 
+use JMS\Serializer\ArrayTransformerInterface;
 use Printdeal\PandosearchBundle\Builder\BuilderInterface;
 use Printdeal\PandosearchBundle\DependencyInjection\Compiler\QueryBuildersPass;
 use Printdeal\PandosearchBundle\DeserializationHandler\SearchDeserializationHandler;
@@ -9,6 +10,7 @@ use Printdeal\PandosearchBundle\DeserializationHandler\SuggestionDeserialization
 use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -51,16 +53,18 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
             ->setArgument(0, $localizations);
 
         $container->getDefinition(SearchDeserializationHandler::class)
-            ->setArgument(
-                1,
-                $mergedConfig['deserialization_parameters']['search_response_entity'] ?? SearchResponse::class
-            );
+            ->setArguments([
+                $mergedConfig['deserialization_parameters']['search_response_entity'] ?? SearchResponse::class,
+                new Reference(ArrayTransformerInterface::class)
+            ])
+            ->setAbstract(false);
 
         $container->getDefinition(SuggestionDeserializationHandler::class)
-            ->setArgument(
-                1,
-                $mergedConfig['deserialization_parameters']['suggestion_response_entity'] ?? SuggestionResponse::class
-            );
+            ->setArguments([
+                $mergedConfig['deserialization_parameters']['suggestion_response_entity'] ?? SuggestionResponse::class,
+                new Reference(ArrayTransformerInterface::class)
+            ])
+            ->setAbstract(false);
     }
 
     /**
