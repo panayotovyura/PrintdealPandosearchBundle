@@ -28,16 +28,6 @@ class SearchService
     const DEFAULT_RETURN_TYPE = 'array';
 
     /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-
-    /**
-     * @var SuggestCriteriaBuilder
-     */
-    private $suggestCriteriaBuilder;
-
-    /**
      * @var SerializerInterface
      */
     private $serializer;
@@ -48,21 +38,23 @@ class SearchService
     private $clientLocator;
 
     /**
+     * @var QueryBuilder
+     */
+    private $queryBuilder;
+
+    /**
      * SearchService constructor.
      * @param HttpClientLocator $clientLocator
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param SuggestCriteriaBuilder $suggestCriteriaBuilder
+     * @param QueryBuilder $queryBuilder
      * @param SerializerInterface $serializer
      */
     public function __construct(
         HttpClientLocator $clientLocator,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        SuggestCriteriaBuilder $suggestCriteriaBuilder,
+        QueryBuilder $queryBuilder,
         SerializerInterface $serializer
     ) {
         $this->clientLocator = $clientLocator;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->suggestCriteriaBuilder = $suggestCriteriaBuilder;
+        $this->queryBuilder = $queryBuilder;
         $this->serializer = $serializer;
     }
 
@@ -78,7 +70,7 @@ class SearchService
         return $this->getResponse(
             self::SEARCH_ENDPOINT,
             $localization,
-            $this->searchCriteriaBuilder->build($criteria),
+            $this->queryBuilder->build($criteria),
             SearchResponse::class
         );
     }
@@ -95,7 +87,7 @@ class SearchService
         return $this->getResponse(
             self::SUGGEST_ENDPOINT,
             $localization,
-            $this->suggestCriteriaBuilder->build($criteria),
+            $this->queryBuilder->build($criteria),
             SuggestionResponse::class
         );
     }

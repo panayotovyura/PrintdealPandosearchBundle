@@ -18,10 +18,10 @@ abstract class BaseQueryBuilder
     private $overrides;
 
     /**
-    * SearchCriteriaBuilder constructor.
-    * @param ArrayTransformerInterface $serializer
-    * @param array $queryOverrides
-    */
+     * BaseQueryBuilder constructor.
+     * @param ArrayTransformerInterface $serializer
+     * @param array $queryOverrides
+     */
     public function __construct(ArrayTransformerInterface $serializer, array $queryOverrides = [])
     {
         $this->serializer = $serializer;
