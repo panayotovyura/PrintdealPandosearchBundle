@@ -10,6 +10,7 @@ use Printdeal\PandosearchBundle\Criteria\SearchCriteria;
 use Printdeal\PandosearchBundle\Criteria\SuggestCriteria;
 use Printdeal\PandosearchBundle\Entity\Search\Response as SearchResponse;
 use Printdeal\PandosearchBundle\Entity\Suggestion\Response as SuggestionResponse;
+use Printdeal\PandosearchBundle\Exception\BuilderNotFoundException;
 use Printdeal\PandosearchBundle\Exception\RequestException;
 use Printdeal\PandosearchBundle\Exception\SerializationException;
 use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
@@ -63,6 +64,7 @@ class SearchService
      * @param string $localization
      * @throws RequestException
      * @throws SerializationException
+     * @throws BuilderNotFoundException
      * @return mixed|SearchResponse
      */
     public function search(SearchCriteria $criteria, string $localization = 'default')
@@ -80,6 +82,7 @@ class SearchService
      * @param string $localization
      * @throws RequestException
      * @throws SerializationException
+     * @throws BuilderNotFoundException
      * @return mixed|SuggestionResponse
      */
     public function suggest(SuggestCriteria $criteria, string $localization = 'default')

@@ -13,16 +13,14 @@ services:
     Printdeal\PandosearchBundle\Service\SearchService: ~
 
     printdeal_pandosearch:
-        alias: '@Printdeal\PandosearchBundle\Service\SearchService'
+        alias: 'Printdeal\PandosearchBundle\Service\SearchService'
         public: true
 
     Printdeal\PandosearchBundle\DeserializationHandler\SearchDeserializationHandler:
-        abstract: true
         tags:
             - { name: 'jms_serializer.subscribing_handler' }
 
     Printdeal\PandosearchBundle\DeserializationHandler\SuggestionDeserializationHandler:
-        abstract: true
         tags:
             - { name: 'jms_serializer.subscribing_handler' }
 

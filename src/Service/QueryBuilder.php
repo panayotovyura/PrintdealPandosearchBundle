@@ -4,6 +4,7 @@ namespace Printdeal\PandosearchBundle\Service;
 
 use Printdeal\PandosearchBundle\Builder\BuilderInterface;
 use Printdeal\PandosearchBundle\Criteria\SerializableInterface;
+use Printdeal\PandosearchBundle\Exception\BuilderNotFoundException;
 
 class QueryBuilder
 {
@@ -23,7 +24,7 @@ class QueryBuilder
     /**
      * @param SerializableInterface $object
      * @return array
-     * @throws \Exception
+     * @throws BuilderNotFoundException
      */
     public function build(SerializableInterface $object): array
     {
@@ -33,7 +34,6 @@ class QueryBuilder
             }
         }
 
-        //todo: add proper exception;
-        throw new \Exception();
+        throw new BuilderNotFoundException();
     }
 }
