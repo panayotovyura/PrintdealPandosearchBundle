@@ -8,15 +8,6 @@ use Printdeal\PandosearchBundle\Criteria\SuggestCriteria;
 class SuggestCriteriaBuilder extends BaseQueryBuilder implements BuilderInterface
 {
     /**
-     * @param SerializableInterface $criteria
-     * @return array
-     */
-    public function build(SerializableInterface $criteria): array
-    {
-        return parent::buildSerializableObject($criteria);
-    }
-
-    /**
      * @param SerializableInterface $object
      * @return bool
      */

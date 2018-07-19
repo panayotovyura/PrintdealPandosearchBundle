@@ -41,7 +41,7 @@ abstract class BaseQueryBuilder
     * @param SerializableInterface $criteria
     * @return array
     */
-    protected function buildSerializableObject(SerializableInterface $criteria): array
+    public function build(SerializableInterface $criteria): array
     {
         return  $this->executeOverrides(
             $this->serializer->toArray($criteria)
