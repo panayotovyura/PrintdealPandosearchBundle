@@ -8,14 +8,13 @@ use JMS\Serializer\Exception\UnsupportedFormatException;
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
 use \PHPUnit_Framework_MockObject_MockObject as Mock;
-use Printdeal\PandosearchBundle\Builder\SearchCriteriaBuilder;
-use Printdeal\PandosearchBundle\Builder\SuggestCriteriaBuilder;
 use Printdeal\PandosearchBundle\Criteria\SearchCriteria;
 use Printdeal\PandosearchBundle\Criteria\SuggestCriteria;
 use Printdeal\PandosearchBundle\Exception\ClientNotFoundException;
 use Printdeal\PandosearchBundle\Exception\RequestException;
 use Printdeal\PandosearchBundle\Exception\SerializationException;
 use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
+use Printdeal\PandosearchBundle\Service\QueryBuilder;
 use Printdeal\PandosearchBundle\Service\SearchService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -26,15 +25,13 @@ class SearchServiceTest extends TestCase
 {
     /**
      * @param Mock|null $clientLocator
-     * @param Mock|null $searchCriteriaBuilder
-     * @param Mock|null $suggestCriteriaBuilder
+     * @param Mock|null $queryBuilder
      * @param Mock|null $serializer
      * @return SearchService
      */
     private function getSearchServiceMock(
         Mock $clientLocator = null,
-        Mock $searchCriteriaBuilder = null,
-        Mock $suggestCriteriaBuilder = null,
+        Mock $queryBuilder = null,
         Mock $serializer = null
     ) {
         if (!$clientLocator) {
@@ -44,16 +41,9 @@ class SearchServiceTest extends TestCase
                 ->getMock();
         }
 
-        if (!$searchCriteriaBuilder) {
-            /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
-            $searchCriteriaBuilder = $this->getMockBuilder(SearchCriteriaBuilder::class)
-                ->disableOriginalConstructor()
-                ->getMock();
-        }
-
-        if (!$suggestCriteriaBuilder) {
-            /** @var SuggestCriteriaBuilder $suggestCriteriaBuilder */
-            $suggestCriteriaBuilder = $this->getMockBuilder(SuggestCriteriaBuilder::class)
+        if (!$queryBuilder) {
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
                 ->disableOriginalConstructor()
                 ->getMock();
         }
@@ -65,7 +55,7 @@ class SearchServiceTest extends TestCase
                 ->getMock();
         }
 
-        return new SearchService($clientLocator, $searchCriteriaBuilder, $suggestCriteriaBuilder, $serializer);
+        return new SearchService($clientLocator, $queryBuilder, $serializer);
     }
 
     public function testSearchGuzzleError()
@@ -75,11 +65,11 @@ class SearchServiceTest extends TestCase
             'q' => 'some search query',
         ];
 
-        /** @var SearchCriteriaBuilder|Mock $searchCriteriaBuilder */
-        $searchCriteriaBuilder = $this->getMockBuilder(SearchCriteriaBuilder::class)
+        /** @var QueryBuilder|Mock $criteriaBuilder */
+        $criteriaBuilder = $this->getMockBuilder(QueryBuilder::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $searchCriteriaBuilder->expects($this->once())
+        $criteriaBuilder->expects($this->once())
             ->method('build')
             ->with($criteria)
             ->willReturn($criteriaArray);
@@ -116,7 +106,7 @@ class SearchServiceTest extends TestCase
 
         $this->expectException(RequestException::class);
 
-        $this->getSearchServiceMock($clientLocator, $searchCriteriaBuilder)->search($criteria);
+        $this->getSearchServiceMock($clientLocator, $criteriaBuilder)->search($criteria);
     }
 
     public function testSearchSerializerError()
@@ -126,8 +116,8 @@ class SearchServiceTest extends TestCase
             'q' => 'some search query',
         ];
 
-        /** @var SearchCriteriaBuilder|Mock $searchCriteriaBuilder */
-        $searchCriteriaBuilder = $this->getMockBuilder(SearchCriteriaBuilder::class)
+        /** @var QueryBuilder|Mock $searchCriteriaBuilder */
+        $searchCriteriaBuilder = $this->getMockBuilder(QueryBuilder::class)
             ->disableOriginalConstructor()
             ->getMock();
         $searchCriteriaBuilder->expects($this->once())
@@ -190,7 +180,6 @@ class SearchServiceTest extends TestCase
         $this->getSearchServiceMock(
             $clientLocator,
             $searchCriteriaBuilder,
-            null,
             $serializer
         )->search($criteria);
     }
@@ -202,8 +191,8 @@ class SearchServiceTest extends TestCase
             'q' => 'some search query',
         ];
 
-        /** @var SearchCriteriaBuilder|Mock $searchCriteriaBuilder */
-        $searchCriteriaBuilder = $this->getMockBuilder(SearchCriteriaBuilder::class)
+        /** @var QueryBuilder|Mock $searchCriteriaBuilder */
+        $searchCriteriaBuilder = $this->getMockBuilder(QueryBuilder::class)
             ->disableOriginalConstructor()
             ->getMock();
         $searchCriteriaBuilder->expects($this->once())
@@ -267,7 +256,6 @@ class SearchServiceTest extends TestCase
         $this->assertEquals($searchResponseObject, $this->getSearchServiceMock(
             $clientLocator,
             $searchCriteriaBuilder,
-            null,
             $serializer
         )->search($criteria));
     }
@@ -279,8 +267,8 @@ class SearchServiceTest extends TestCase
             'q' => 'some search query',
         ];
 
-        /** @var SuggestCriteriaBuilder|Mock $suggestCriteriaBuilder */
-        $suggestCriteriaBuilder = $this->getMockBuilder(SuggestCriteriaBuilder::class)
+        /** @var QueryBuilder|Mock $suggestCriteriaBuilder */
+        $suggestCriteriaBuilder = $this->getMockBuilder(QueryBuilder::class)
             ->disableOriginalConstructor()
             ->getMock();
         $suggestCriteriaBuilder->expects($this->once())
@@ -343,7 +331,6 @@ class SearchServiceTest extends TestCase
 
         $this->assertEquals($suggestionResponseObject, $this->getSearchServiceMock(
             $clientLocator,
-            null,
             $suggestCriteriaBuilder,
             $serializer
         )->suggest($criteria));
@@ -357,8 +344,8 @@ class SearchServiceTest extends TestCase
         ];
         $localization = 'as';
 
-        /** @var SearchCriteriaBuilder|Mock $searchCriteriaBuilder */
-        $searchCriteriaBuilder = $this->getMockBuilder(SearchCriteriaBuilder::class)
+        /** @var QueryBuilder|Mock $searchCriteriaBuilder */
+        $searchCriteriaBuilder = $this->getMockBuilder(QueryBuilder::class)
             ->disableOriginalConstructor()
             ->getMock();
         $searchCriteriaBuilder->expects($this->once())

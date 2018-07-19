@@ -3,10 +3,10 @@
 namespace Printdeal\PandosearchBundle\DependencyInjection;
 
 use Printdeal\PandosearchBundle\Builder\BuilderInterface;
+use Printdeal\PandosearchBundle\DependencyInjection\Compiler\QueryBuildersPass;
 use Printdeal\PandosearchBundle\DeserializationHandler\SearchDeserializationHandler;
 use Printdeal\PandosearchBundle\DeserializationHandler\SuggestionDeserializationHandler;
 use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
-use Printdeal\PandosearchBundle\Service\QueryBuilder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
@@ -17,8 +17,6 @@ use Printdeal\PandosearchBundle\Entity\Suggestion\DefaultResponse as SuggestionR
 
 class PrintdealPandosearchExtension extends ConfigurableExtension implements PrependExtensionInterface
 {
-    const BUILDER_TAG = 'printdeal.pandosearch.builder';
-
     const CONFIGS_PATH = __DIR__ . '/../Resources/config';
     const DEFAULT_GUZZLE_TIMEOUT = 15;
     const DEFAULT_GUZZLE_CONNECT_TIMEOUT = 2;
@@ -35,19 +33,16 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
     protected function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {
         $container->registerForAutoconfiguration(BuilderInterface::class)
-            ->addTag(self::BUILDER_TAG);
+            ->addTag(QueryBuildersPass::BUILDER_TAG);
 
         $loader = new YamlFileLoader($container, new FileLocator(self::CONFIGS_PATH));
         $loader->load('services.yml');
 
         if (!empty($mergedConfig['query_settings'])) {
-            $builderIds = array_keys($container->findTaggedServiceIds(self::BUILDER_TAG));
-            $builderService = $container->getDefinition(QueryBuilder::class);
+            $builderIds = array_keys($container->findTaggedServiceIds(QueryBuildersPass::BUILDER_TAG));
             foreach ($builderIds as $builderId) {
-                $searchServiceDefinition = $container->getDefinition($builderId);
-                $searchServiceDefinition->setArgument('queryOverrides', $mergedConfig['query_settings']);
-
-                $builderService->addMethodCall('addBuilder', [$searchServiceDefinition]);
+                $builderDefinition = $container->getDefinition($builderId);
+                $builderDefinition->setArgument('queryOverrides', $mergedConfig['query_settings']);
             }
         }
 

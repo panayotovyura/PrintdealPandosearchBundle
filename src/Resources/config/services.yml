@@ -1,5 +1,5 @@
 services:
-    __defaults:
+    _defaults:
         public: false
         autowire: true
         autoconfigure: true
@@ -10,12 +10,7 @@ services:
     Printdeal\PandosearchBundle\Builder\SuggestCriteriaBuilder: ~
     Printdeal\PandosearchBundle\Service\QueryBuilder: ~
 
-    Printdeal\PandosearchBundle\Service\SearchService:
-        arguments:
-            - '@printdeal_pandosearch.locator.http_client_locator'
-            - '@printdeal_pandosearch.builder.search_criteria_builder'
-            - '@printdeal_pandosearch.builder.suggest_criteria_builder'
-            - '@jms_serializer.serializer'
+    Printdeal\PandosearchBundle\Service\SearchService: ~
 
     printdeal_pandosearch:
         alias: '@Printdeal\PandosearchBundle\Service\SearchService'
