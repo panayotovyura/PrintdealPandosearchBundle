@@ -35,7 +35,7 @@ abstract class AbstractResponseDeserializer
      * @param JsonDeserializationVisitor $visitor
      * @param array $response
      * @return mixed
-     * @SuppressWarnings(PHPMD)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function deserializeResponse(JsonDeserializationVisitor $visitor, array $response)
     {
