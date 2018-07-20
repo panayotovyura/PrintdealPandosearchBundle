@@ -3,15 +3,16 @@
 namespace Printdeal\PandosearchBundle\Builder;
 
 use Printdeal\PandosearchBundle\Criteria\SearchCriteria;
+use Printdeal\PandosearchBundle\Criteria\SerializableInterface;
 
-class SearchCriteriaBuilder extends BaseQueryBuilder
+class SearchCriteriaBuilder extends BaseQueryBuilder implements BuilderInterface
 {
     /**
-     * @param SearchCriteria $criteria
-     * @return array
+     * @param SerializableInterface $object
+     * @return bool
      */
-    public function build(SearchCriteria $criteria): array
+    public function supports(SerializableInterface $object): bool
     {
-        return parent::buildSerializableObject($criteria);
+        return $object instanceof SearchCriteria;
     }
 }

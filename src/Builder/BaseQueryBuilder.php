@@ -18,10 +18,10 @@ abstract class BaseQueryBuilder
     private $overrides;
 
     /**
-    * SearchCriteriaBuilder constructor.
-    * @param ArrayTransformerInterface $serializer
-    * @param array $queryOverrides
-    */
+     * BaseQueryBuilder constructor.
+     * @param ArrayTransformerInterface $serializer
+     * @param array $queryOverrides
+     */
     public function __construct(ArrayTransformerInterface $serializer, array $queryOverrides = [])
     {
         $this->serializer = $serializer;
@@ -41,7 +41,7 @@ abstract class BaseQueryBuilder
     * @param SerializableInterface $criteria
     * @return array
     */
-    protected function buildSerializableObject(SerializableInterface $criteria): array
+    public function build(SerializableInterface $criteria): array
     {
         return  $this->executeOverrides(
             $this->serializer->toArray($criteria)

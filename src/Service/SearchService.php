@@ -4,12 +4,11 @@ namespace Printdeal\PandosearchBundle\Service;
 
 use GuzzleHttp\Exception\TransferException;
 use JMS\Serializer\SerializerInterface;
-use Printdeal\PandosearchBundle\Builder\SearchCriteriaBuilder;
-use Printdeal\PandosearchBundle\Builder\SuggestCriteriaBuilder;
 use Printdeal\PandosearchBundle\Criteria\SearchCriteria;
 use Printdeal\PandosearchBundle\Criteria\SuggestCriteria;
 use Printdeal\PandosearchBundle\Entity\Search\Response as SearchResponse;
 use Printdeal\PandosearchBundle\Entity\Suggestion\Response as SuggestionResponse;
+use Printdeal\PandosearchBundle\Exception\BuilderNotFoundException;
 use Printdeal\PandosearchBundle\Exception\RequestException;
 use Printdeal\PandosearchBundle\Exception\SerializationException;
 use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
@@ -28,16 +27,6 @@ class SearchService
     const DEFAULT_RETURN_TYPE = 'array';
 
     /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-
-    /**
-     * @var SuggestCriteriaBuilder
-     */
-    private $suggestCriteriaBuilder;
-
-    /**
      * @var SerializerInterface
      */
     private $serializer;
@@ -48,21 +37,23 @@ class SearchService
     private $clientLocator;
 
     /**
+     * @var QueryBuilder
+     */
+    private $queryBuilder;
+
+    /**
      * SearchService constructor.
      * @param HttpClientLocator $clientLocator
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param SuggestCriteriaBuilder $suggestCriteriaBuilder
+     * @param QueryBuilder $queryBuilder
      * @param SerializerInterface $serializer
      */
     public function __construct(
         HttpClientLocator $clientLocator,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        SuggestCriteriaBuilder $suggestCriteriaBuilder,
+        QueryBuilder $queryBuilder,
         SerializerInterface $serializer
     ) {
         $this->clientLocator = $clientLocator;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->suggestCriteriaBuilder = $suggestCriteriaBuilder;
+        $this->queryBuilder = $queryBuilder;
         $this->serializer = $serializer;
     }
 
@@ -71,6 +62,7 @@ class SearchService
      * @param string $localization
      * @throws RequestException
      * @throws SerializationException
+     * @throws BuilderNotFoundException
      * @return mixed|SearchResponse
      */
     public function search(SearchCriteria $criteria, string $localization = 'default')
@@ -78,7 +70,7 @@ class SearchService
         return $this->getResponse(
             self::SEARCH_ENDPOINT,
             $localization,
-            $this->searchCriteriaBuilder->build($criteria),
+            $this->queryBuilder->build($criteria),
             SearchResponse::class
         );
     }
@@ -88,6 +80,7 @@ class SearchService
      * @param string $localization
      * @throws RequestException
      * @throws SerializationException
+     * @throws BuilderNotFoundException
      * @return mixed|SuggestionResponse
      */
     public function suggest(SuggestCriteria $criteria, string $localization = 'default')
@@ -95,7 +88,7 @@ class SearchService
         return $this->getResponse(
             self::SUGGEST_ENDPOINT,
             $localization,
-            $this->suggestCriteriaBuilder->build($criteria),
+            $this->queryBuilder->build($criteria),
             SuggestionResponse::class
         );
     }

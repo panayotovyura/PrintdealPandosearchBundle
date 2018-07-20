@@ -7,6 +7,9 @@ use JMS\Serializer\JsonDeserializationVisitor;
 
 abstract class AbstractResponseDeserializer
 {
+    const DEFAULT_METHOD = 'deserializeResponse';
+    const DEFAULT_FORMAT = 'json';
+
     /**
      * @var string
      */
@@ -15,27 +18,27 @@ abstract class AbstractResponseDeserializer
     /**
      * @var ArrayTransformerInterface
      */
-    private $serializer;
+    private $arrayTransformer;
 
     /**
-     * ResponseDeserializer constructor.
+     * AbstractResponseDeserializer constructor.
      * @param string $entity
-     * @param ArrayTransformerInterface $serializer
+     * @param ArrayTransformerInterface $arrayTransformer
      */
-    public function __construct(string $entity, ArrayTransformerInterface $serializer)
+    public function __construct(string $entity, ArrayTransformerInterface $arrayTransformer)
     {
         $this->entity = $entity;
-        $this->serializer = $serializer;
+        $this->arrayTransformer = $arrayTransformer;
     }
 
     /**
      * @param JsonDeserializationVisitor $visitor
      * @param array $response
      * @return mixed
-     * @SuppressWarnings(PHPMD)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function deserializeResponse(JsonDeserializationVisitor $visitor, array $response)
     {
-        return $this->serializer->fromArray($response, $this->entity);
+        return $this->arrayTransformer->fromArray($response, $this->entity);
     }
 }

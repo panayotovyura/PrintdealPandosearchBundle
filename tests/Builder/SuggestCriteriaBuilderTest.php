@@ -49,4 +49,8 @@ class SuggestCriteriaBuilderTest extends AbstractBuilderTest
         ];
     }
 
+    public function testSupport()
+    {
+        $this->assertTrue($this->getBuilder()->supports(new SuggestCriteria()));
+    }
 }

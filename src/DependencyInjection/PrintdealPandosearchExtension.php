@@ -2,8 +2,15 @@
 
 namespace Printdeal\PandosearchBundle\DependencyInjection;
 
+use JMS\Serializer\ArrayTransformerInterface;
+use Printdeal\PandosearchBundle\Builder\BuilderInterface;
+use Printdeal\PandosearchBundle\DependencyInjection\Compiler\QueryBuildersPass;
+use Printdeal\PandosearchBundle\DeserializationHandler\SearchDeserializationHandler;
+use Printdeal\PandosearchBundle\DeserializationHandler\SuggestionDeserializationHandler;
+use Printdeal\PandosearchBundle\Locator\HttpClientLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -27,29 +34,33 @@ class PrintdealPandosearchExtension extends ConfigurableExtension implements Pre
      */
     protected function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {
+        $container->registerForAutoconfiguration(BuilderInterface::class)
+            ->addTag(QueryBuildersPass::BUILDER_TAG);
+
         $loader = new YamlFileLoader($container, new FileLocator(self::CONFIGS_PATH));
         $loader->load('services.yml');
 
         if (!empty($mergedConfig['query_settings'])) {
-            $builderIds = array_keys($container->findTaggedServiceIds('printdeal.pandosearch.builder'));
-            foreach ($builderIds as $builderId) {
-                $searchServiceDefinition = $container->getDefinition($builderId);
-                $searchServiceDefinition->replaceArgument(1, $mergedConfig['query_settings']);
-            }
+            $container->setParameter('printdeal.pandosearch.query_overrides', $mergedConfig['query_settings']);
         }
 
         $localizations = $this->getLocalizations($mergedConfig);
-        $container->getDefinition('printdeal_pandosearch.locator.http_client_locator')
+        $container->getDefinition(HttpClientLocator::class)
             ->setArgument(0, $localizations);
-        $container->setParameter(
-            'printdeal_pandosearch.deserialization_parameters.search_response_entity',
-            $mergedConfig['deserialization_parameters']['search_response_entity'] ?? SearchResponse::class
-        );
 
-        $container->setParameter(
-            'printdeal_pandosearch.deserialization_parameters.suggestion_response_entity',
-            $mergedConfig['deserialization_parameters']['suggestion_response_entity'] ?? SuggestionResponse::class
-        );
+        $container->getDefinition(SearchDeserializationHandler::class)
+            ->setArguments([
+                $mergedConfig['deserialization_parameters']['search_response_entity'] ?? SearchResponse::class,
+                new Reference(ArrayTransformerInterface::class)
+            ])
+            ->setAbstract(false);
+
+        $container->getDefinition(SuggestionDeserializationHandler::class)
+            ->setArguments([
+                $mergedConfig['deserialization_parameters']['suggestion_response_entity'] ?? SuggestionResponse::class,
+                new Reference(ArrayTransformerInterface::class)
+            ])
+            ->setAbstract(false);
     }
 
     /**
