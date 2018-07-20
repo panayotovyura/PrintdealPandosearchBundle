@@ -83,4 +83,9 @@ class SearchCriteriaBuilderTest extends AbstractBuilderTest
             ],
         ];
     }
+
+    public function testSupport()
+    {
+        $this->assertTrue($this->getBuilder()->supports(new SearchCriteria()));
+    }
 }

@@ -13,6 +13,12 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
+            <exclude>
+                <directory>./src/DependencyInjection/</directory>
+                <directory>./src/Criteria/</directory>
+                <directory>./src/Entity/</directory>
+                <file>./src/PrintdealPandosearchBundle.php</file>
+            </exclude>
         </whitelist>
     </filter>
     <logging>

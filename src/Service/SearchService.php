@@ -4,8 +4,6 @@ namespace Printdeal\PandosearchBundle\Service;
 
 use GuzzleHttp\Exception\TransferException;
 use JMS\Serializer\SerializerInterface;
-use Printdeal\PandosearchBundle\Builder\SearchCriteriaBuilder;
-use Printdeal\PandosearchBundle\Builder\SuggestCriteriaBuilder;
 use Printdeal\PandosearchBundle\Criteria\SearchCriteria;
 use Printdeal\PandosearchBundle\Criteria\SuggestCriteria;
 use Printdeal\PandosearchBundle\Entity\Search\Response as SearchResponse;
