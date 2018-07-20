@@ -8,14 +8,17 @@ use Printdeal\PandosearchBundle\Entity\Suggestion\Response;
 
 class SuggestionDeserializationHandler extends AbstractResponseDeserializer implements SubscribingHandlerInterface
 {
+    /**
+     * @return array
+     */
     public static function getSubscribingMethods()
     {
         return [
             [
                 'direction' => GraphNavigator::DIRECTION_DESERIALIZATION,
-                'format' => 'json',
+                'format' => self::DEFAULT_FORMAT,
                 'type' => Response::class,
-                'method' => 'deserializeResponse',
+                'method' => self::DEFAULT_METHOD,
             ]
         ];
     }

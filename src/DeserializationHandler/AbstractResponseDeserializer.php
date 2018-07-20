@@ -7,6 +7,9 @@ use JMS\Serializer\JsonDeserializationVisitor;
 
 abstract class AbstractResponseDeserializer
 {
+    const DEFAULT_METHOD = 'deserializeResponse';
+    const DEFAULT_FORMAT = 'json';
+
     /**
      * @var string
      */
