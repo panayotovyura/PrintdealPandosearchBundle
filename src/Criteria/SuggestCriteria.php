@@ -20,6 +20,12 @@ final class SuggestCriteria implements SerializableInterface
     private $track;
 
     /**
+     * @var int
+     * @Serializer\Type("integer")
+     */
+    private $size = 10;
+
+    /**
      * @param string $query
      * @return SuggestCriteria
      */
@@ -36,6 +42,16 @@ final class SuggestCriteria implements SerializableInterface
     public function setTrack(bool $track): SuggestCriteria
     {
         $this->track = $track;
+        return $this;
+    }
+
+    /**
+     * @param int $size
+     * @return SuggestCriteria
+     */
+    public function setSize(int $size)
+    {
+        $this->size = $size;
         return $this;
     }
 }
