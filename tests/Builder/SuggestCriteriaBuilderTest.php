@@ -30,12 +30,15 @@ class SuggestCriteriaBuilderTest extends AbstractBuilderTest
         return [
             [
                 new SuggestCriteria(),
-                []
+                [
+                    'size' => 10
+                ]
             ],
             [
                 (new SuggestCriteria())->setTrack(false),
                 [
                     'track' => false,
+                    'size' => 10
                 ]
             ],
             [
@@ -44,6 +47,17 @@ class SuggestCriteriaBuilderTest extends AbstractBuilderTest
                 [
                     'q' => 'test query',
                     'track' => false,
+                    'size' => 10
+                ]
+            ],
+            [
+                (new SuggestCriteria())->setQuery('test query')
+                    ->setTrack(false)
+                    ->setSize(5),
+                [
+                    'q' => 'test query',
+                    'track' => false,
+                    'size' => 5
                 ]
             ],
         ];
