@@ -55,8 +55,9 @@ class HttpClientLocator
             return $this->clients[$localization];
         }
 
-        if (count($this->clients) === 1) {
-            return reset($this->clients);
+        $client = reset($this->clients);
+        if ($client instanceof ClientInterface) {
+            return $client;
         }
 
         throw new ClientNotFoundException($localization);

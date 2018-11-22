@@ -51,7 +51,7 @@ class Response
     private $timing;
 
     /**
-     * @var ArrayCollection<Printdeal\PandosearchBundle\Entity\Suggestion>
+     * @var ArrayCollection<\Printdeal\PandosearchBundle\Entity\Suggestion>
      * @Serializer\Type("ArrayCollection<Printdeal\PandosearchBundle\Entity\Suggestion>")
      */
     private $suggestions;
