@@ -7,7 +7,7 @@ use GuzzleHttp\Exception\ClientException;
 use JMS\Serializer\Exception\UnsupportedFormatException;
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
-use \PHPUnit_Framework_MockObject_MockObject as Mock;
+use PHPUnit\Framework\MockObject\MockObject as Mock;
 use Printdeal\PandosearchBundle\Criteria\SearchCriteria;
 use Printdeal\PandosearchBundle\Criteria\SuggestCriteria;
 use Printdeal\PandosearchBundle\Exception\ClientNotFoundException;
@@ -24,9 +24,9 @@ use Printdeal\PandosearchBundle\Entity\Suggestion\Response as SuggestionResponse
 class SearchServiceTest extends TestCase
 {
     /**
-     * @param Mock|null $clientLocator
-     * @param Mock|null $queryBuilder
-     * @param Mock|null $serializer
+     * @param HttpClientLocator|Mock $clientLocator
+     * @param QueryBuilder|Mock $queryBuilder
+     * @param SerializerInterface|Mock $serializer
      * @return SearchService
      */
     private function getSearchServiceMock(
@@ -34,21 +34,21 @@ class SearchServiceTest extends TestCase
         Mock $queryBuilder = null,
         Mock $serializer = null
     ) {
-        if (!$clientLocator) {
+        if (is_null($clientLocator)) {
             /** @var HttpClientLocator $clientLocator */
             $clientLocator = $this->getMockBuilder(HttpClientLocator::class)
                 ->disableOriginalConstructor()
                 ->getMock();
         }
 
-        if (!$queryBuilder) {
+        if (is_null($queryBuilder)) {
             /** @var QueryBuilder $queryBuilder */
             $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
                 ->disableOriginalConstructor()
                 ->getMock();
         }
 
-        if (!$serializer) {
+        if (is_null($serializer)) {
             /** @var SerializerInterface $serializer */
             $serializer = $this->getMockBuilder(SerializerInterface::class)
                 ->disableOriginalConstructor()
