@@ -26,6 +26,12 @@ class Response
     private $timing;
 
     /**
+     * @var DidYouMean
+     * @Serializer\Type("Printdeal\PandosearchBundle\Entity\Suggestion\DidYouMean")
+     */
+    private $didYouMean;
+
+    /**
      * @return array
      */
     public function getHits(): array
@@ -47,5 +53,13 @@ class Response
     public function getTiming(): Timing
     {
         return $this->timing ?? (new Timing());
+    }
+
+    /**
+     * @return DidYouMean
+     */
+    public function getDidYouMean(): DidYouMean
+    {
+        return $this->didYouMean;
     }
 }
