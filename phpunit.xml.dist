@@ -9,6 +9,9 @@
     <testsuite name="Unit tests">
         <directory suffix="Test.php">tests</directory>
     </testsuite>
+    <php>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak_vendors" />
+    </php>
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
