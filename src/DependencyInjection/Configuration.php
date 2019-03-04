@@ -15,9 +15,10 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('printdeal_pandosearch');
+        $treeBuilder = new TreeBuilder('printdeal_pandosearch', 'array');
 
+        /** @var ArrayNodeDefinition $rootNode */
+        $rootNode = $treeBuilder->getRootNode();
         $rootNode
             ->children()
                 ->scalarNode('company_name')
@@ -25,112 +26,111 @@ class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->cannotBeEmpty()
                 ->end()
-                ->append($this->hostSettings())
-                ->append($this->guzzleSettings())
-                ->append($this->defaultQueryOptions())
-                ->append($this->localizationsTree())
-                ->append($this->getDeserializationEntity())
-                ->end()
             ->end()
         ;
+
+        $this->addHostSettings($rootNode);
+        $this->addLocalizationsTree($rootNode);
+        $this->addDefaultQueryOptions($rootNode);
+        $this->addGuzzleSettings($rootNode);
+        $this->addDeserializationEntity($rootNode);
 
         return $treeBuilder;
     }
 
     /**
-     * @return ArrayNodeDefinition
+     * @param ArrayNodeDefinition $rootNode
      */
-    private function hostSettings()
+    private function addHostSettings(ArrayNodeDefinition $rootNode)
     {
-        $tree = new TreeBuilder();
-        $node = $tree->root('search');
-
-        $node->addDefaultsIfNotSet()
+        $rootNode
             ->children()
-                ->scalarNode('protocol')
-                    ->defaultValue('https')
+                ->arrayNode('search')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('protocol')
+                            ->defaultValue('https')
+                        ->end()
+                        ->scalarNode('host')
+                            ->defaultValue('search.enrise.com')
+                            ->info('Search API host. Can be used to activate search at Enrise acceptance environment.')
+                        ->end()
+                    ->end()
                 ->end()
-                ->scalarNode('host')
-                    ->defaultValue('search.enrise.com')
-                    ->info(
-                        'Search API host. Can be used to activate search at Enrise acceptance environment.'
-                    )
-                ->end()
-            ->end()
-        ->end();
-
-        return $node;
-    }
-
-    /**
-     * @return ArrayNodeDefinition
-     */
-    private function localizationsTree()
-    {
-        return (new TreeBuilder())->root('localizations')
-                ->prototype('scalar')
             ->end();
     }
 
     /**
-     * @return ArrayNodeDefinition
+     * @param ArrayNodeDefinition $rootNode
      */
-    private function defaultQueryOptions()
+    private function addLocalizationsTree(ArrayNodeDefinition $rootNode)
     {
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('query_settings');
-
-        $node->children()
-                ->booleanNode('track')->end()
-                ->booleanNode('full')->end()
-                ->booleanNode('nocorrect')->end()
-                ->booleanNode('notiming')->end()
+        $rootNode
+            ->children()
+                ->arrayNode('localizations')
+                    ->prototype('scalar')
+                ->end()
             ->end();
-
-        return $node;
     }
 
     /**
-     * @return ArrayNodeDefinition
+     * @param ArrayNodeDefinition $rootNode
      */
-    private function guzzleSettings()
+    private function addDefaultQueryOptions(ArrayNodeDefinition $rootNode)
     {
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('guzzle_client');
-
-        $node->addDefaultsIfNotSet()
-                ->children()
-                    ->integerNode('timeout')
-                        ->defaultValue(PrintdealPandosearchExtension::DEFAULT_GUZZLE_TIMEOUT)
-                    ->end()
-                    ->integerNode('connect_timeout')
-                        ->defaultValue(PrintdealPandosearchExtension::DEFAULT_GUZZLE_CONNECT_TIMEOUT)
+        $rootNode
+            ->children()
+                ->arrayNode('query_settings')
+                    ->children()
+                        ->booleanNode('track')->end()
+                        ->booleanNode('full')->end()
+                        ->booleanNode('nocorrect')->end()
+                        ->booleanNode('notiming')->end()
                     ->end()
                 ->end()
             ->end();
-
-        return $node;
     }
 
     /**
-     * @return ArrayNodeDefinition
+     * @param ArrayNodeDefinition $rootNode
      */
-    private function getDeserializationEntity()
+    private function addGuzzleSettings(ArrayNodeDefinition $rootNode)
     {
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('deserialization_parameters');
+        $rootNode
+            ->children()
+                ->arrayNode('guzzle_client')
+                    ->addDefaultsIfNotSet()
+                        ->children()
+                            ->integerNode('timeout')
+                                ->defaultValue(PrintdealPandosearchExtension::DEFAULT_GUZZLE_TIMEOUT)
+                            ->end()
+                            ->integerNode('connect_timeout')
+                                ->defaultValue(PrintdealPandosearchExtension::DEFAULT_GUZZLE_CONNECT_TIMEOUT)
+                            ->end()
+                        ->end()
+                ->end()
+            ->end();
+    }
 
-        $node->addDefaultsIfNotSet()
-                ->children()
-                    ->scalarNode('search_response_entity')
-                        ->defaultValue(SearchResponse::class)
-                    ->end()
-                    ->scalarNode('suggestion_response_entity')
-                        ->defaultValue(SuggestionResponse::class)
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addDeserializationEntity(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('deserialization_parameters')
+                    ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('search_response_entity')
+                                ->defaultValue(SearchResponse::class)
+                            ->end()
+                            ->scalarNode('suggestion_response_entity')
+                                ->defaultValue(SuggestionResponse::class)
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end();
-
-        return $node;
     }
 }
